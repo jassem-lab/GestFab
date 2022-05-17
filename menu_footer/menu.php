@@ -142,7 +142,7 @@ if (isset($_SESSION['erp_bc_MAILUSER'])) {
                                             </a></b></li>
                                         <li><a href="phases.php"><b style="font-size:12px">Matière première</a></b>
                                         </li>
-                                        <li><a href="familles.php"><b style="font-size:12px">Moule semi-finis</a></b>
+                                        <li><a href="gest_moule.php"><b style="font-size:12px">Moule semi-finis</a></b>
                                         </li>
                                         <li><a href="couleur_peinture.php"><b style="font-size:12px">Service
                                                     supplémentaire</a></b></li>
