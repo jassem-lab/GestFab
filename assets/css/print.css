@@ -1,0 +1,17 @@
+@page
+{
+    size : A4 ; 
+    margin : 0; 
+}
+ #print_button{
+     display : none !important ;
+     visibility: none !important;
+ } 
+ #SubmitContact{
+     display : none  !important; 
+     visibility: none !important;
+ }
+ #buttons_s{
+    display : none !important; 
+    visibility: none !important;
+ }

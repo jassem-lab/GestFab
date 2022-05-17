@@ -1,0 +1,24 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://www.impots.finances.gov.tn/declaration_employeur" href="DecEmp21.jnlp">
+
+	<information>
+		<title>Declarations d'employeur pour l'annee 2021</title>
+		<vendor>Centre Informatique du Ministère des Finances</vendor>
+		<homepage href="http://www.impots.finances.gov.tn/declaration_employeur" />	
+        <offline-ollowed/>		
+	</information>
+	
+	<security>
+		<all-permissions/>
+	</security>
+
+	<resources>
+		<j2se version="1.6+" />
+		<jar href="DecEmp21.jar"/>
+	</resources>
+
+	<application-desc main-class="analyse.AnalyseDecEmp21" />
+
+</jnlp>
+			
