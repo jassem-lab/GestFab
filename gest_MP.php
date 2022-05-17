@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <h4 class="page-title">Gestion des moules semi-finis</h4>
+                    <h4 class="page-title">Gestion des classes matière première</h4>
                     <br> Utilisateur : <?php echo $_SESSION['erp_bc_USER']; ?>
                 </div>
             </div>
@@ -15,7 +15,7 @@
     <script>
     function Supprimer(id) {
         if (confirm('Confirmez-vous cette action?')) {
-            document.location.href = "page_js/supprimermoule.php?ID=" + id;
+            document.location.href = "page_js/supprimerMP.php?ID=" + id;
         }
     }
     </script>
@@ -26,36 +26,46 @@
 	}else{
 		$id = "0";
 	}
-
+    $reqClasse="";
+    $classe_mp="";
+    if(isset($_POST['moule_mp'])){
+        if(is_numeric($_POST['classe_mp'])){
+            $classe_mp		=	$_POST['classe_mp'];
+            $reqClasse	=	" and  id=".$classe_mp;
+        }
+    }
 
 if(isset($_POST['enregistrer_mail'])){	
 
 
-	$moule	        	=	addslashes($_POST["moule"]) ;
+	$classe	        	=	addslashes($_POST["classe_mp"]) ;
+	$code_interne		=	addslashes($_POST["code_interne"]) ;
+	$code_abarre	    	=	addslashes($_POST["code_abarre"]) ;
 	$designation		=	addslashes($_POST["designation"]) ;
+	$prix		        =	addslashes($_POST["prix"]) ;
 
 	if($id=="0")
 		{
-			$sql="INSERT INTO `erp_bc_moule`(`moule`,`designation`) VALUES
-			('".$moule."' , '".$designation."' )";
+			$sql="INSERT INTO `erp_bc_mp`(`classe` ,`codeinterne` ,`code_abarre` ,`designation` , `prix`) VALUES
+			('".$classe."' ,'".$code_interne."' ,'".$code_abarre."' ,'".$designation."' ,'".$prix."')";
 			
 			//Log
 			$dateheure=date('Y-m-d H:i:s');
 			$iduser=$_SESSION['erp_bc_IDUSER'];
-			$document="Table de base - Moule SF ";
-			$action="Création d'une Moule SF :".($moule);
+			$document="Table de MP";
+			$action="Création d'une MP:".($classe);
 			
 			$sql1="INSERT INTO `erp_bc_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";
 			$req=mysql_query($sql1);			
-		}
-	else{
-			$sql="UPDATE `erp_bc_moule` SET `moule`='".$moule."' , `designation`='".$designation."' WHERE id=".$id;
+		    }
+	        else{
+			$sql="UPDATE `erp_bc_mp` SET `classe`='".$classe."' , `codeinterne`='".$code_interne."' , `code_abarre` = '".$code_abarre."' , `designation`='".$designation."',`prix`='".$prix."' WHERE id=".$id;
 			
 			//Log
 			$dateheure=date('Y-m-d H:i:s');
 			$iduser=$_SESSION['erp_bc_IDUSER'];
-			$document="Table de base - Moule PF ";
-			$action="Modification d'une Moule SF :".($moule);
+			$document="Table de base - MP ";
+			$action="Modification d'une MP :".($classe);
 			
 			$sql1="INSERT INTO `erp_bc_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";
 			$req=mysql_query($sql1);				
@@ -65,18 +75,37 @@ if(isset($_POST['enregistrer_mail'])){
 		echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="?suc=1" </SCRIPT>';
 
 }
-	$moule		=	"" ;
-	$designation		=	"" ;
+	$classe		    = "" ;
+    $code_interne   = "" ; 
+    $code_abarre    = "" ; 
+    $designation    = "" ; 
+    $prix           = "" ; 
 
-	$req="select * from erp_bc_moule where id=".$id;
+	$req="select * from erp_bc_mp where id=".$id;
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
-		$moule	=	$enreg["moule"] ;
+		$id         	=	$enreg["id"] ;
+		$classe     	=	$enreg["classe"] ;
+		$code_interne	=	$enreg["codeinterne"] ;
+		$code_abarre	=	$enreg["code_abarre"] ;
 		$designation	=	$enreg["designation"] ;
+		$prix	        =   $enreg["prix"] ;
 	}
 	
 	?>
+
+
+    <?php
+$reqClasse              ="";
+$classe_LP              ="";
+if(isset($_POST['classe_LP'])){
+	if(is_numeric($_POST['classe_LP'])){
+		$classe_LP		=	$_POST['classe_LP'];
+		$reqClasse  	=	" and classe=".$classe_LP;
+	}
+}
+?>
     <div class="page-content-wrapper">
         <div class="container-fluid">
             <?php if($_SESSION['erp_bc_PROFIL']==1){ ?>
@@ -92,17 +121,45 @@ if(isset($_POST['enregistrer_mail'])){
                             <?php } }?>
                             <form action="" method="POST">
                                 <div class="form-group row">
-                                    <div class="col-sm-4">
-                                        <b>moules semi-finis (*)</b>
-                                        <input class="form-control" type="text" placeholder="moule semi-finis "
-                                            value="<?php echo $moule; ?>" id="example-text-input" name="moule" required>
+                                    <div class="col-sm-2">
+                                        <b>Code interne (*)</b>
+                                        <input class="form-control" type="text" placeholder="Code interne"
+                                            value="<?php echo $code_interne; ?>" id="example-text-input"
+                                            name="code_interne" required>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
+                                        <b>Code à barre (*)</b>
+                                        <input class="form-control" type="text" placeholder="Code à barre"
+                                            value="<?php echo $code_abarre; ?>" id="example-text-input"
+                                            name="code_abarre" required>
+                                    </div>
+                                    <div class="col-sm-2">
                                         <b>Désignation (*)</b>
-                                        <input class="form-control" type="text" placeholder="designations "
+                                        <input class="form-control" type="text" placeholder="Désignation"
                                             value="<?php echo $designation; ?>" id="example-text-input"
                                             name="designation" required>
                                     </div>
+                                    <div class="col-sm-2">
+                                        <b>Prix d'achat par défaut (*)</b>
+                                        <input class="form-control" type="text" placeholder="Prix d'achat par défaut"
+                                            value="<?php echo $prix; ?>" id="example-text-input" name="prix" required>
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <b>Liste des classes matières</b>
+                                        <select class="form-control select2" name="classe_mp">
+                                            <option value=""> Sélectionner une classe de matière</option>
+                                            <?php
+												$req="select * from erp_bc_classe order by classe";
+												$query=mysql_query($req);
+												while($enreg=mysql_fetch_array($query)){
+												?>
+                                            <option value="<?php echo $enreg['id']; ?>"
+                                                <?php if($classe_mp==$enreg['id']) {?> selected <?php } ?>>
+                                                <?php echo $enreg['classe']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
                                     <div class="col-sm-3"><br>
                                         <button type="submit" class="btn btn-primary waves-effect waves-light">
                                             Enregistrer
@@ -119,36 +176,26 @@ if(isset($_POST['enregistrer_mail'])){
             </div>
             <?php } ?>
 
-            <?php
-$reqMoule="";
-$moule_mp="";
-if(isset($_POST['moule_mp'])){
-	if(is_numeric($_POST['moule_mp'])){
-		$moule_mp		=	$_POST['moule_mp'];
-		$reqMoule	=	" and  id=".$moule_mp;
-	}
-}
-?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h3>Liste des moules SF</h3>
+                            <h3>Liste des MPs</h3>
                             <form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
                                 <div class="col-xl-12">
                                     <div class="row">
                                         <div class="col-xl-3">
-                                            <b>Liste des moules</b>
-                                            <select class="form-control select2" name="moule_mp">
-                                                <option value=""> Sélectionner une moule </option>
+                                            <b>Liste des classes matières</b>
+                                            <select class="form-control select2" name="classe_LP">
+                                                <option value=""> Sélectionner une classe de matière </option>
                                                 <?php
-												$req="select * from erp_bc_moule order by moule";
+												$req="select * from erp_bc_classe order by classe";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
                                                 <option value="<?php echo $enreg['id']; ?>"
-                                                    <?php if($moule_mp==$enreg['id']) {?> selected <?php } ?>>
-                                                    <?php echo $enreg['moule']; ?></option>
+                                                    <?php if($classe_LP==$enreg['id']) {?> selected <?php } ?>>
+                                                    <?php echo $enreg['classe']; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -166,8 +213,12 @@ if(isset($_POST['moule_mp'])){
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th><b>Désignation</b></th>
-                                        <th><b>Moule</b></th>
+                                        <th><b>Classe de matière</b></th>
+                                        <th><b>Code interne</b></th>
+                                        <th><b>Code à barre</b></th>
+                                        <th><b>Designation</b></th>
+                                        <th><b>Prix</b></th>
+                                        <th><b>Action</b></th>
 
                                     </tr>
                                 </thead>
@@ -177,22 +228,35 @@ if(isset($_POST['moule_mp'])){
 	$nom	=	"" ;
 	$id		=	"0" ;		
 	$i		=	"0" ;
-	$req="select * from erp_bc_moule where 1=1 ".$reqMoule." order by moule ";
+   
+    $req="select * from erp_bc_mp where 1=1 ".$reqClasse." order by classe ";
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
-		$nom	=	$enreg["moule"] ;
+		$nom	=	$enreg["classe"] ;
+		$code_abarre	=	$enreg["code_abarre"] ;
+		$code_interne	=	$enreg["codeinterne"] ;
 		$designation	=	$enreg["designation"] ;
+		$prix	=	$enreg["prix"] ;
 		$id		=	$enreg["id"] ;			
 		$i++;
 	
 	?>
                                     <tr>
+                                        <td><?php 
+                                        $reqC = "select * from erp_bc_classe where id=".$nom ; 
+                                        $queryC = mysql_query($reqC) ; 
+                                        while($enregC = mysql_fetch_array($queryC)){
+                                            echo $enregC["classe"] ; 
+                                        }
+                                        ?></td>
+                                        <td><?php echo $code_interne; ?></td>
+                                        <td><?php echo $code_abarre; ?></td>
                                         <td><?php echo $designation; ?></td>
-                                        <td><?php echo $nom; ?></td>
+                                        <td><?php echo $prix; ?></td>
                                         <?php if($_SESSION['erp_bc_PROFIL']==1){ ?>
                                         <td>
-                                            <a href="gest_moule.php?ID=<?php echo $id; ?>"
+                                            <a href="gest_MP.php?ID=<?php echo $id; ?>"
                                                 class="btn btn-warning waves-effect waves-light">Modifier</a>
 
 

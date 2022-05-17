@@ -124,7 +124,7 @@ if(isset($_POST['moule_mp'])){
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h3>Liste des moules des matières</h3>
+                            <h3>Liste des classes des matières</h3>
                             <form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
                                 <div class="col-xl-12">
                                     <div class="row">
