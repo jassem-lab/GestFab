@@ -137,7 +137,7 @@ if (isset($_SESSION['erp_bc_MAILUSER'])) {
                                         </li>
                                         <li><a href="gest_clients.php"><b style="font-size:12px">Clients</a></b></li>
                                         <li><a href="produits.php"><b style="font-size:12px">Fournisseur </a></b></li>
-                                        <li><a href="famille_produit.php"><b style="font-size:12px">Classe des Matières
+                                        <li><a href="gest_classe.php"><b style="font-size:12px">Classe des Matières
                                                     Premières
                                             </a></b></li>
                                         <li><a href="phases.php"><b style="font-size:12px">Matière première</a></b>
