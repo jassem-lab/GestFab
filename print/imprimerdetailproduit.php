@@ -56,7 +56,7 @@ function int_to_words($x) {
 class PDF extends FPDF
 {
 
-// variables privées
+// variables privï¿½es
 
 var $colonnes;
 var $format;
@@ -67,7 +67,7 @@ var $angle=0;
 	$withEntete = $_GET['ent'];
 }*/
 
-// fonctions privées
+// fonctions privï¿½es
 function RoundedRect($x, $y, $w, $h, $r, $style = '')
 {
 	$k = $this->k;
@@ -180,7 +180,7 @@ function fact_dev( $libelle, $num )
     $y2  = $y1 + 2;
     $mid = ($r1 + $r2 ) / 2;
     
-    $texte  = $libelle . " N° : " . $num;    
+    $texte  = $libelle . " N: " . $num;    
     $szfont = 12;
     $loop   = 0;
     
@@ -290,7 +290,7 @@ function addClientAdresse( $clt,$adr,$tel ,$trim )
 	$this->MultiCell( 100, 5, $clt);
 	
 	$this->SetFont( "Arial", "B", 10);
-	$this->Cell(33,8, "Téléphone:", 0, 0, "C");
+	$this->Cell(33,8, "Tï¿½lï¿½phone:", 0, 0, "C");
 	$this->SetFont( "Arial", "", 8);
 	$this->MultiCell( 80, 8, $adr);
 	
@@ -354,13 +354,13 @@ function addNumTVA($tva)
 function addReference($ref)
 {
 	$this->SetFont( "Arial", "", 10);
-	$length = $this->GetStringWidth( "Références : " . $ref );
+	$length = $this->GetStringWidth( "Rï¿½fï¿½rences : " . $ref );
 	$r1  = 10;
 	$r2  = $r1 + $length;
 	$y1  = 92;
 	$y2  = $y1+5;
 	$this->SetXY( $r1 , $y1 );
-	$this->Cell($length,4, "Références : " . $ref);
+	$this->Cell($length,4, "Rï¿½fï¿½rences : " . $ref);
 }
 
 // trace le cadre des colonnes du devis/facture
@@ -386,7 +386,7 @@ function addCols( $tab )
 	}
 }
 
-// mémorise le format (gauche, centre, droite) d'une colonne
+// mï¿½morise le format (gauche, centre, droite) d'une colonne
 function addLineFormat( $tab )
 {
 	global $format, $colonnes;
@@ -650,7 +650,7 @@ function addTVAs( $params, $tab_tva, $invoice )
 		{
 			$accompteTTC=sprintf ("%.2F", $params["accompte"]);
 			if ( strlen ($params["Remarque"]) == 0 )
-				$this->addRemarque( "Accompte de $accompteTTC Euros exigé à la commande.");
+				$this->addRemarque( "Accompte de $accompteTTC Euros exigï¿½ ï¿½ la commande.");
 			else
 				$this->addRemarque( $params["Remarque"] );
 		}
@@ -662,12 +662,12 @@ function addTVAs( $params, $tab_tva, $invoice )
 			$accompteTTC=sprintf("%.2F", $totalTTC * $percent);
 			$percent100 = $percent * 100;
 			if ( strlen ($params["Remarque"]) == 0 )
-				$this->addRemarque( "Accompte de $percent100 % (soit $accompteTTC Euros) exigé à la commande." );
+				$this->addRemarque( "Accompte de $percent100 % (soit $accompteTTC Euros) exigï¿½ ï¿½ la commande." );
 			else
 				$this->addRemarque( $params["Remarque"] );
 		}
 		else
-			$this->addRemarque( "Drôle d'acompte !!! " . $params["Remarque"]);
+			$this->addRemarque( "Drï¿½le d'acompte !!! " . $params["Remarque"]);
 	}
 	else
 	{
@@ -730,7 +730,7 @@ function RowHead($data)
 	for($i=0;$i<count($data);$i++)
 		$nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
 	$h=12;
-	//Effectue un saut de page si nécessaire
+	//Effectue un saut de page si nï¿½cessaire
 	$this->CheckPageBreak($h);
 	//Dessine les cellules
 	for($i=0;$i<count($data);$i++)
@@ -751,10 +751,10 @@ function RowHead($data)
 		//Imprime le texte
 		$this->SetFont('Arial','B',7);
 		$this->MultiCell($w,6,$data[$i],0,$a);
-		//Repositionne à droite
+		//Repositionne ï¿½ droite
 		$this->SetXY($x+$w,$y);
 	}
-	//Va à la ligne
+	//Va ï¿½ la ligne
 	$this->Ln($h);
 }
 
@@ -765,7 +765,7 @@ function RowHeadBase($data)
 	for($i=0;$i<count($data);$i++)
 		$nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
 	$h=5*$nb;
-	//Effectue un saut de page si nécessaire
+	//Effectue un saut de page si nï¿½cessaire
 	$this->CheckPageBreak($h);
 	//Dessine les cellules
 	for($i=0;$i<count($data);$i++)
@@ -780,10 +780,10 @@ function RowHeadBase($data)
 		//Imprime le texte
 		$this->SetFont('Arial','B',11);
 		$this->MultiCell($w,6,$data[$i],0,$a);
-		//Repositionne à droite
+		//Repositionne ï¿½ droite
 		$this->SetXY($x+$w,$y);
 	}
-	//Va à la ligne
+	//Va ï¿½ la ligne
 	$this->Ln($h);
 }
 
@@ -801,7 +801,7 @@ function Row($data)
 			$h=10;
 		}
 
-	//Effectue un saut de page si nécessaire
+	//Effectue un saut de page si nï¿½cessaire
 	$this->CheckPageBreak($h);
 	//Dessine les cellules
 	for($i=0;$i<count($data);$i++)
@@ -823,10 +823,10 @@ function Row($data)
 		//Imprime le texte
 		$this->SetFont('Arial','',6);
 		$this->MultiCell($w,4,$data[$i],0,$a);
-		//Repositionne à droite
+		//Repositionne ï¿½ droite
 		$this->SetXY($x+$w,$y);
 	}
-	//Va à la ligne
+	//Va ï¿½ la ligne
 	$this->Ln($h);
 }
 
@@ -843,7 +843,7 @@ function Row1($data)
 			$h=10;
 		}
 
-	//Effectue un saut de page si nécessaire
+	//Effectue un saut de page si nï¿½cessaire
 	$this->CheckPageBreak($h);
 	//Dessine les cellules
 	for($i=0;$i<count($data);$i++)
@@ -865,16 +865,16 @@ function Row1($data)
 		//Imprime le texte
 		$this->SetFont('Arial','B',6);
 		$this->MultiCell($w,4,$data[$i],0,$a);
-		//Repositionne à droite
+		//Repositionne ï¿½ droite
 		$this->SetXY($x+$w,$y);
 	}
-	//Va à la ligne
+	//Va ï¿½ la ligne
 	$this->Ln($h);
 }
 
 function CheckPageBreak($h)
 {
-	//Si la hauteur h provoque un débordement, saut de page manuel
+	//Si la hauteur h provoque un dï¿½bordement, saut de page manuel
 	if($this->GetY()+$h>$this->PageBreakTrigger)
 		$this->AddPage($this->CurOrientation);
 }
@@ -938,13 +938,13 @@ function Header()
 
 function Footer()
 {
-	// Positionnement à 1,5 cm du bas
+	// Positionnement ï¿½ 1,5 cm du bas
 	$this->SetY(-15);
 	// Arial italique 8
 	$this->SetFont('Arial','I',8);
 	// Couleur du texte en gris
 	$this->SetTextColor(128);
-	// Numéro de page
+	// Numï¿½ro de page
 	//$this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
 }
 
@@ -966,7 +966,7 @@ function CorpsChapitre($fichier)
 	//$txt = file_get_contents($fichier);
 	// Times 12
 	$this->SetFont('Arial','',12);
-	// Sortie du texte justifié
+	// Sortie du texte justifiï¿½
 	$this->MultiCell(170,5,$fichier);
 	// Saut de ligne
 	// Mention en italique
@@ -980,7 +980,7 @@ function CorpsChapitreBold($fichier)
 	//$txt = file_get_contents($fichier);
 	// Times 12
 	$this->SetFont('Arial','B',12);
-	// Sortie du texte justifié
+	// Sortie du texte justifiï¿½
 	$this->SetTextColor(0, 0, 0);
 	$this->MultiCell(250,5,$fichier);
 	// Saut de ligne
@@ -1013,7 +1013,7 @@ function CorpsChapitreBoldTailleCouleur($fichier, $taille, $redColor, $greenColo
 	// Times 12
 	$this->SetFont('Arial','B',$taille);
 	$this->SetTextColor($redColor, $greenColor, $blueColor);
-	// Sortie du texte justifié
+	// Sortie du texte justifiï¿½
 	$this->MultiCell(110,10,$fichier);
 	// Saut de ligne
 	$this->Ln();
@@ -1029,7 +1029,7 @@ function CorpsChapitreTitreDOCUMENT($fichier, $taille)
 	// Times 12
 	$this->SetFont('Arial','B',$taille);
 	$this->SetTextColor(0,80,180);
-	// Sortie du texte justifié
+	// Sortie du texte justifiï¿½
 	$this->Ln();
 	$this->MultiCell(200,10,$fichier);
 	// Saut de ligne
@@ -1046,7 +1046,7 @@ function CorpsChapitreParametrer($fichier, $taille, $police, $style, $redColor, 
 	// Times 12
 	$this->SetFont($police,$style,$taille);
 	$this->SetTextColor($redColor, $greenColor, $blueColor);
-	// Sortie du texte justifié
+	// Sortie du texte justifiï¿½
 	$this->MultiCell(190,5,$fichier);
 	// Mention en italique
 	$this->SetFont('','I');
@@ -1071,7 +1071,7 @@ function AjouterPage()
 }	
 	
 if(!isset($_SESSION['erp_bc_MAILUSER'])){
-	echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="../index.php" </SCRIPT>';
+	echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="../index.php"</SCRIPT>';
 	exit;
 }	
 	
@@ -1091,95 +1091,136 @@ if(isset($_GET['ent'])){
 $pdf = new PDF();
 $pdf->SetFont('Arial', '', 12);
 $pdf->Ln();$pdf->Ln();$pdf->Ln();
-$pdf->SetAuthor('POLY COMPOSITE');
+$pdf->SetAuthor('Gestion Fabrication');
 $pdf->AddPage();
 
 //$pdf->Image('../assets/entete.png', -2, -3, 220 , 0, 'PNG');
 //$pdf->Image('../assets/pied.png', 0, 276, 210 , 0, 'PNG');
 
 $date				=	"";
-$client				=	"";
-$famille			=	"";
 $reference			=	"";
-$tel				=	"";
-$adresse			=	"";
+$id					=	0;
+$client				=	"";
+$montant			=	"0";
+$stock				=	"0";
 $id					=	$_GET['ID'];
 
 
-$req="select * from erp_bc_bl where id=".$id;	
+$req="select * from erp_bc_nomenclatures_fini where id=".$id;	
 $query=mysql_query($req);
 while($enreg=mysql_fetch_array($query))
 {
-		$id					=	$enreg["id"] ;	
-		$date				=	$enreg["date"] ;
-		$reference			=	$enreg["reference"] ;
-		$date				=	date("d/m/Y", strtotime($date) );	
-		
-		$reqfm="select * from erp_bc_clients where id=".$enreg['client'];
-		$queryfm=mysql_query($reqfm);
-		while($enregfm=mysql_fetch_array($queryfm)){
-			$client				=	$enregfm["raisonsocial"] ;
-			$tel				=	$enregfm["telephone"] ;
-			$adresse			=	$enregfm["adresse"] ;
-		}
-		
-		$trimestre=0;
-		$reqtrim="select * from erp_bc_trimestre where id=".$enreg["trimestre"];
-		$querytrim=mysql_query($reqtrim);
-		while($enregtrim=mysql_fetch_array($querytrim)){
-			$trimestre	=	$enregtrim['trimestre'].'-'.$enreg['annee'];
-		}	
-		
+		$id								=	$enreg["id"] ;	
+		$mp_fini						=	$enreg["mp_fini"] ;
+		$quantite						=	$enreg["quantite"] ;
+		$service						=	$enreg["service"] ;
+		$produit_sf						=	$enreg["produit_sf"] ;
+		$quantite_sf					=	$enreg["quantite_sf"] ;
+		$code_produit					=	$enreg["code_produit"] ;
+		$quantite_service				=	$enreg["quantite_service"] ;
+		$date							=	date("d/m/Y");
 }
-	$reference = stripslashes($reference);
-	$reference = iconv('UTF-8', 'windows-1252', $reference);
+    $produit="";
+    $reqprd="select * from erp_bc_produits where id=".$code_produit;
+    $queryprd=mysql_query($reqprd);
+    while($enregprd=mysql_fetch_array($queryprd)){
+        $produit	=	$enregprd['code_interne'];
+    }
 
-	$pdf->fact_dev( "Référence", $reference );
+	$pdf->fact_dev( "Produit", $produit );
 	$pdf->Ln();$pdf->Ln();$pdf->Ln();
 		
-/*	$pdf->addDate( $date );
+	$pdf->addDate( $date );
 	$pdf->addPageNumber("1");
-	if($client<>""){
-		$pdf->addClientAdresse($client,$tel,$adresse,$trimestre);
-	}
-*/
-$total_tt=0;
-$total=0;$tot_qte=0;
-$pdf->SetWidths(array(60,20,20,30,30,30));
-srand(microtime()*1000000);
-$pdf->Ln();$pdf->Ln();
-$des="";
-$pdf->RowHead(array(("Produit"),("Poids"),("Volume"),("Prix unitaire"),("Quantité"),("Prix total")));
-	$article="";
-	$req="select * from erp_bc_det_bl where idbl=".$id." order by produit desc ";
-	$query=mysql_query($req);
-	while($enreg=mysql_fetch_array($query))
-	{
-		$iddet				=	$enreg["id"] ;	
-		$qte				=	$enreg["quantite"] ;
-		$poids				=	0;
-		$volume				=	0;
+	
 
-		$reqfm="select * from erp_bc_produits where id=".$enreg["produit"];
-		$queryfm=mysql_query($reqfm);
-		while($enregfm=mysql_fetch_array($queryfm)){
-			$article		=	$enregfm["code"] ;
-			$poids			=	$enregfm["poids"] ;
-			$volume			=	$enregfm["volume"] ;
-		}
-		
-		$pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
-		$pdf->Row(array(utf8_decode($article),($poids),($volume),(number_format($enreg["prix_unitaire"],'3','.','')),($qte),(number_format($enreg["prix_total"],'3','.',''))));		
-		
-		$total_tt	=	$total_tt+$enreg["prix_total"];
-		$total		=	$total+$enreg["prix_unitaire"];
-	}
-$pdf->SetWidths(array(60,20,20,30,30,30));
-srand(microtime()*1000000);
-$pdf->Ln();$pdf->Ln();
+    $total_tt=0;
+    $total=0;$tot_qte=0;
+    $pdf->SetWidths(array(60,20));
+    srand(microtime()*1000000);
+    $pdf->Ln();$pdf->Ln();
+    $des="";
+    $pdf->RowHead(array((utf8_decode("MatiÃ¨re premiere")),(utf8_decode("QauntitÃ©"))));
+    $req ="select * from erp_bc_nomenclatures_fini where mp_fini>0 and code_produit=".$_GET['ID'] ; 
+    $query = mysql_query($req) ; 
+    while($enreg = mysql_fetch_array($query)){
+        $mp  			= 	$enreg["mp_fini"] ; 
+        $quantite  		= 	$enreg["quantite"] ; 
+        $idNm 			=   $enreg["id"] ; 
+        $reqNom = "select * from erp_bc_mp where id=".$mp ; 
+        $queryNom = mysql_query($reqNom) ; 
+        while($enregNom = mysql_fetch_array($queryNom)){
+            $mp= $enregNom["codeinterne"];
+         }   
+             $pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
+             $pdf->Row(array($mp, $quantite));		
 
-	$pdf->SetFont('Arial','B', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
-	$pdf->RowHead(array(utf8_decode(''),(''),('TOTAL'),number_format($total,'3','.',''),'',number_format($total_tt,'3','.','')));		
+    }
+
+    $pdf->Ln();$pdf->Ln(); 
+    $pdf->RowHead(array((utf8_decode("Produit Semi-finis")),(utf8_decode("QauntitÃ©"))));
+    $req ="select * from erp_bc_nomenclatures_fini where produit_sf>0  and code_produit=".$_GET['ID'] ; 
+    $query = mysql_query($req) ; 
+    while($enreg = mysql_fetch_array($query)){
+        $sf  			= 	$enreg["produit_sf"] ; 
+        $quantite  		= 	$enreg["quantite_sf"] ; 
+        $idNm 			=   $enreg["id"] ; 
+        $reqNom = "select * from erp_bc_produitsf where id=".$sf ; 
+        $queryNom = mysql_query($reqNom) ; 
+        while($enregNom = mysql_fetch_array($queryNom)){
+           $semif= $enregNom["code_interne"];
+         }
+
+                $pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
+                $pdf->Row(array($semif,$quantite));	
+    }
+    $pdf->Ln();$pdf->Ln(); 
+    $pdf->RowHead(array((utf8_decode("MP du produit SF")),(utf8_decode("QauntitÃ©"))));
+     $req ="select * from erp_bc_nomenclatures" ; 
+    $query = mysql_query($req) ; 
+    while($enreg = mysql_fetch_array($query)){
+        $sf  			= 	$enreg["code_interne"] ; 
+        $quantite  		= 	$enreg["quantite"] ; 
+        $idNm 			=   $enreg["id"] ; 
+        $reqNom = "select * from erp_bc_produitsf where id=".$sf ; 
+        $queryNom = mysql_query($reqNom) ; 
+        while($enregNom = mysql_fetch_array($queryNom)){
+           $semif= $enregNom["code_interne"];
+         }
+
+                $pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
+                $pdf->Row(array($semif,$quantite));	
+    }
+
+    $pdf->Ln();$pdf->Ln();
+
+    $pdf->RowHead(array((utf8_decode("Service")),(utf8_decode("QauntitÃ©"))));
+    $req ="select * from erp_bc_nomenclatures_fini where service>0 and code_produit=".$_GET['ID'] ; 
+    $query = mysql_query($req) ; 
+    while($enreg = mysql_fetch_array($query)){
+        $service  		           	= 	$enreg["service"] ; 
+        $quantite_service  			= 	$enreg["quantite_service"] ; 
+        $idNm 			            =   $enreg["id"] ; 
+       
+        $reqNom = "select * from erp_bc_services where id=".$service ; 
+        $queryNom = mysql_query($reqNom) ; 
+        while($enregNom = mysql_fetch_array($queryNom)){
+             $service = $enregNom["code"];
+         }
+
+            $pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
+            $pdf->Row(array($service,$enreg['quantite_service']));	
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 $filename=$reference.".pdf";

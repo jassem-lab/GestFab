@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <h4 class="page-title">Gestion des classes matière première</h4>
+                    <h4 class="page-title">Gestion des  matières premières</h4>
                     <br> Utilisateur : <?php echo $_SESSION['erp_bc_USER']; ?>
                 </div>
             </div>
@@ -140,14 +140,14 @@ if(isset($_POST['classe_LP'])){
                                             name="designation" required>
                                     </div>
                                     <div class="col-sm-2">
-                                        <b>Prix d'achat par défaut (*)</b>
-                                        <input class="form-control" type="text" placeholder="Prix d'achat par défaut"
+                                        <b>Prix d’achat unitaire (*)</b>
+                                        <input class="form-control" type="text" placeholder="Prix d’achat unitaire"
                                             value="<?php echo $prix; ?>" id="example-text-input" name="prix" required>
                                     </div>
                                     <div class="col-xl-3">
-                                        <b>Liste des classes matières</b>
+                                        <b>Liste des provenances des matières</b>
                                         <select class="form-control select2" name="classe_mp">
-                                            <option value=""> Sélectionner une classe de matière</option>
+                                            <option value=""> Sélectionner une provenance de matière</option>
                                             <?php
 												$req="select * from erp_bc_classe order by classe";
 												$query=mysql_query($req);
@@ -185,9 +185,9 @@ if(isset($_POST['classe_LP'])){
                                 <div class="col-xl-12">
                                     <div class="row">
                                         <div class="col-xl-3">
-                                            <b>Liste des classes matières</b>
+                                            <b>Liste des provenances des matières</b>
                                             <select class="form-control select2" name="classe_LP">
-                                                <option value=""> Sélectionner une classe de matière </option>
+                                                <option value=""> Sélectionner une provenance de matière </option>
                                                 <?php
 												$req="select * from erp_bc_classe order by classe";
 												$query=mysql_query($req);
@@ -213,7 +213,7 @@ if(isset($_POST['classe_LP'])){
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th><b>Classe de matière</b></th>
+                                        <th><b>Provenance de matière</b></th>
                                         <th><b>Code interne</b></th>
                                         <th><b>Code à barre</b></th>
                                         <th><b>Designation</b></th>

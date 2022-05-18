@@ -7,5 +7,5 @@ include('../connexion/cn.php');
 	$sql = "delete from `erp_bc_mp` WHERE id=".$id;
 	$requete = mysql_query($sql) ;
 	
-  	echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="../gest_MP.php" </SCRIPT>';
+  	echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="../gest_produit.php" </SCRIPT>';
 ?>

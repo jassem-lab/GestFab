@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <h4 class="page-title">Gestion des moules semi-finis</h4>
+                    <h4 class="page-title">Gestion des phases de fabrications</h4>
                     <br> Utilisateur : <?php echo $_SESSION['erp_bc_USER']; ?>
                 </div>
             </div>
@@ -15,7 +15,7 @@
     <script>
     function Supprimer(id) {
         if (confirm('Confirmez-vous cette action?')) {
-            document.location.href = "page_js/supprimermoule.php?ID=" + id;
+            document.location.href = "page_js/supprimerphases.php?ID=" + id;
         }
     }
     </script>
@@ -31,49 +31,30 @@
 if(isset($_POST['enregistrer_mail'])){	
 
 
-	$moule	        	=	addslashes($_POST["moule"]) ;
-	$designation		=	addslashes($_POST["designation"]) ;
-
+	$description		=	addslashes($_POST["description"]) ;
+	$code	        	=	addslashes($_POST["code"]) ;
+	
 	if($id=="0")
 		{
-			$sql="INSERT INTO `erp_bc_moule`(`moule`,`designation`) VALUES
-			('".$moule."' , '".$designation."' )";
-			
-			//Log
-			$dateheure=date('Y-m-d H:i:s');
-			$iduser=$_SESSION['erp_bc_IDUSER'];
-			$document="Table de base - Moule SF ";
-			$action="Création d'une Moule SF :".($moule);
-			
-			$sql1="INSERT INTO `erp_bc_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";
-			$req=mysql_query($sql1);			
+			$sql="INSERT INTO `erp_bc_services`(`code`,`description`) VALUES
+			('".$description."','".$code."' )";
 		}
 	else{
-			$sql="UPDATE `erp_bc_moule` SET `moule`='".$moule."' , `designation`='".$designation."' WHERE id=".$id;
-			
-			//Log
-			$dateheure=date('Y-m-d H:i:s');
-			$iduser=$_SESSION['erp_bc_IDUSER'];
-			$document="Table de base - Moule PF ";
-			$action="Modification d'une Moule SF :".($moule);
-			
-			$sql1="INSERT INTO `erp_bc_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";
-			$req=mysql_query($sql1);				
+			$sql="UPDATE `erp_bc_services` SET `code`='".$code."',`description`='".$description."' WHERE id=".$id;
 		}
 		$req=mysql_query($sql);
 
 		echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="?suc=1" </SCRIPT>';
 
 }
-	$moule		=	"" ;
-	$designation		=	"" ;
-
-	$req="select * from erp_bc_moule where id=".$id;
+	$description		=	"" ;
+	$code       		=	"" ;
+	$req="select * from erp_bc_services where id=".$id;
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
-		$moule	=	$enreg["moule"] ;
-		$designation	=	$enreg["designation"] ;
+		$code       	=	$enreg["code"] ;
+		$description	=	$enreg["description"] ;
 	}
 	
 	?>
@@ -92,19 +73,20 @@ if(isset($_POST['enregistrer_mail'])){
                             <?php } }?>
                             <form action="" method="POST">
                                 <div class="form-group row">
-                                <b>moules semi-finis (*)</b>
-                                    <div class="col-sm-4">
-                                    <b>Code (*)</b>
-                                        <input class="form-control" type="text" placeholder="moule semi-finis "
-                                            value="<?php echo $moule; ?>" id="example-text-input" name="moule" required>
+
+                                    <div class="col-lg-2" id="" style="">
+                                        <b>Code</b>
+                                        <br>
+                                        <input name="code" type="text" id="code" class="form-control"
+                                            value="<?php echo $code ?>" placeholder="Code..." />
                                     </div>
-                                    <div class="col-sm-4">
-                                        <b>Désignation (*)</b>
-                                        <input class="form-control" type="text" placeholder="designations "
-                                            value="<?php echo $designation; ?>" id="example-text-input"
-                                            name="designation" required>
+                                    <div class="col-lg-3" id="" style="">
+                                        <b>Description</b>
+                                        <br>
+                                        <input name="description" type="text" id="description" class="form-control"
+                                            placeholder="Description ..." value="<?php echo $description ?>" />
                                     </div>
-                                    <div class="col-sm-3"><br>
+                                    <div class="col-sm-2"><br>
                                         <button type="submit" class="btn btn-primary waves-effect waves-light">
                                             Enregistrer
                                         </button>
@@ -118,38 +100,38 @@ if(isset($_POST['enregistrer_mail'])){
                     </div>
                 </div>
             </div>
-            <?php } ?>
+            <?php }?>
 
             <?php
-$reqMoule="";
-$moule_mp="";
-if(isset($_POST['moule_mp'])){
-	if(is_numeric($_POST['moule_mp'])){
-		$moule_mp		=	$_POST['moule_mp'];
-		$reqMoule	=	" and  id=".$moule_mp;
+$reqphase="";
+$phase_mp="";
+if(isset($_POST['phase_mp'])){
+	if(is_numeric($_POST['phase_mp'])){
+		$phase_mp		=	$_POST['phase_mp'];
+		$reqphase		=	" and  id=".$phase_mp;
 	}
 }
-?>  
+?>
             <div class="row">
-           
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
+                            <h3>Liste des services supplémentaires</h3>
                             <form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
                                 <div class="col-xl-12">
                                     <div class="row">
                                         <div class="col-xl-3">
-                                            <b>Liste des moules</b>
-                                            <select class="form-control select2" name="moule_mp">
-                                                <option value=""> Sélectionner une moule </option>
+                                            <b>Liste des services</b>
+                                            <select class="form-control select2" name="phase_mp">
+                                                <option value=""> Sélectionner un service </option>
                                                 <?php
-												$req="select * from erp_bc_moule order by moule";
+												$req="select * from erp_bc_services order by code";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
                                                 <option value="<?php echo $enreg['id']; ?>"
-                                                    <?php if($moule_mp==$enreg['id']) {?> selected <?php } ?>>
-                                                    <?php echo $enreg['moule']; ?></option>
+                                                    <?php if($phase_mp==$enreg['id']) {?> selected <?php } ?>>
+                                                    <?php echo $enreg['code']; ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -167,40 +149,43 @@ if(isset($_POST['moule_mp'])){
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th><b>Désignation</b></th>
-                                        <th><b>Moule</b></th>
-
+                                        <th><b>Code</b></th>
+                                        <th><b>Description</b></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
 
-	$nom	=	"" ;
-	$id		=	"0" ;		
-	$i		=	"0" ;
-	$req="select * from erp_bc_moule where 1=1 ".$reqMoule." order by moule ";
+	$description	=	"" ;
+	$code		=	""  ;		
+
+	
+	$req="select * from erp_bc_services where 1=1 ".$reqphase;
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
-		$nom	=	$enreg["moule"] ;
-		$designation	=	$enreg["designation"] ;
-		$id		=	$enreg["id"] ;			
-		$i++;
+		$description	=	$enreg["description"] ;
+		$code		=	$enreg["code"] ;			
+        $id         =   $enreg["id"] ; 
 	
+		
 	?>
                                     <tr>
-                                        <td><?php echo $designation; ?></td>
-                                        <td><?php echo $nom; ?></td>
+                                        <td><?php echo $description ; ?></td>
+                                        <td><?php echo $code ; ?></td>
                                         <?php if($_SESSION['erp_bc_PROFIL']==1){ ?>
                                         <td>
-                                            <a href="gest_moule.php?ID=<?php echo $id; ?>"
+                                            <a href="gest_services.php?ID=<?php echo $id; ?>"
                                                 class="btn btn-warning waves-effect waves-light">Modifier</a>
-
-
+                                            <?php 
+												/*$reqc='select * from telec_requete where idclient='.$id;
+												$queryc=mysql_query($reqc);
+												$numc=mysql_num_rows($queryc);
+												if($numc=='0'){ ?>
                                             <a href="Javascript:Supprimer('<?php echo $id; ?>')"
                                                 class="btn btn-danger waves-effect waves-light"
                                                 style="background-color:brown">Supprimer</a>
-
+                                            <?php }*/ ?>
                                         </td>
                                         <?php } ?>
                                     </tr>

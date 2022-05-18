@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <h4 class="page-title">Gestion des classes matière première</h4>
+                    <h4 class="page-title">Provenance des matières premières</h4>
                     <br> Utilisateur : <?php echo $_SESSION['erp_bc_USER']; ?>
                 </div>
             </div>
@@ -124,14 +124,14 @@ if(isset($_POST['moule_mp'])){
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h3>Liste des classes des matières</h3>
+                            <h3>Liste des provenances des matières premières</h3>
                             <form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
                                 <div class="col-xl-12">
                                     <div class="row">
                                         <div class="col-xl-3">
-                                            <b>Liste des classes matières</b>
+                                            <b>Liste des provenances</b>
                                             <select class="form-control select2" name="classe_mp">
-                                                <option value=""> Sélectionner une classe de matière </option>
+                                                <option value=""> Sélectionner une provenances de matière </option>
                                                 <?php
 												$req="select * from erp_bc_classe order by classe";
 												$query=mysql_query($req);
@@ -158,7 +158,7 @@ if(isset($_POST['moule_mp'])){
                                 <thead>
                                     <tr>
                                         <th><b>#</b></th>
-                                        <th><b>Classe de matière</b></th>
+                                        <th><b>Provenance de matière</b></th>
 
                                     </tr>
                                 </thead>

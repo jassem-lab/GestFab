@@ -136,18 +136,18 @@ if (isset($_SESSION['erp_bc_MAILUSER'])) {
                                         <li><a href="utilisateurs.php"><b style="font-size:12px">Utilisateurs</a></b>
                                         </li>
                                         <li><a href="gest_clients.php"><b style="font-size:12px">Clients</a></b></li>
-                                        <li><a href="gest_classe.php"><b style="font-size:12px">Classe des Matières
+                                        <li><a href="gest_classe.php"><b style="font-size:12px">Provenance des Matières
                                                     Premières
                                             </a></b></li>
                                         <li><a href="gest_MP.php"><b style="font-size:12px">Matière première</a></b>
                                         </li>
-                                        <li><a href="gest_moule.php"><b style="font-size:12px">Moule semi-finis</a></b>
+                                        <li><a href="gest_moule.php"><b style="font-size:12px">Moules semi-finis</a></b>
                                         </li>
-                                        <li><a href="couleur_peinture.php"><b style="font-size:12px">Service
-                                                    supplémentaire</a></b></li>
-                                        <li><a href="type_defauts.php"><b style="font-size:12px">Produit
+                                        <li><a href="gest_services.php"><b style="font-size:12px">Services supplémentaires 
+                                            </a></b></li>
+                                        <li><a href="gest_produitsf.php"><b style="font-size:12px">Produit
                                                     semi-fini</a></b></li>
-                                        <li><a href="contenu_mails.php"><b style="font-size:12px">Produit fini</a></b>
+                                        <li><a href="gest_produit.php"><b style="font-size:12px">Produit fini</a></b>
                                         </li>
 
                                     </ul>

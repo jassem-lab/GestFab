@@ -57,8 +57,8 @@ if(isset($_POST['enregistrer_mail'])){
 	
 	if($id=="0")
 		{
-			$sql="INSERT INTO `erp_bc_clients`(`raisonsocial`, `adresse`, `pays`, `telephone`, `mail`, `personne`, `gsm`) VALUES
-			('".$raisonsocial."','".$adresse."','".$pays."' ,'".$telephone."' ,'".$mail."' ,'".$personne."' ,'".$gsm."' )";
+			// $sql="INSERT INTO `erp_bc_clients`(`raisonsocial`, `adresse`, `pays`, `telephone`, `mail`, `personne`, `gsm`) VALUES
+			// ('".$raisonsocial."','".$adresse."','".$pays."' ,'".$telephone."' ,'".$mail."' ,'".$personne."' ,'".$gsm."' )";
 			
 			//Log
 			$dateheure=date('Y-m-d H:i:s');
