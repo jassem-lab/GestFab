@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <h4 class="page-title">Gestion des  matières premières</h4>
+                    <h4 class="page-title">Gestion des matières premières</h4>
                     <br> Utilisateur : <?php echo $_SESSION['erp_bc_USER']; ?>
                 </div>
             </div>
@@ -40,13 +40,32 @@ if(isset($_POST['enregistrer_mail'])){
 
 	$classe	        	=	addslashes($_POST["classe_mp"]) ;
 	$code_interne		=	addslashes($_POST["code_interne"]) ;
-	$code_abarre	    	=	addslashes($_POST["code_abarre"]) ;
+	$code_abarre	    =	addslashes($_POST["code_abarre"]) ;
 	$designation		=	addslashes($_POST["designation"]) ;
 	$prix		        =	addslashes($_POST["prix"]) ;
 
-	if($id=="0")
-		{
-			$sql="INSERT INTO `erp_bc_mp`(`classe` ,`codeinterne` ,`code_abarre` ,`designation` , `prix`) VALUES
+
+
+
+	if($id=="0"){
+
+            $reqverif="select * from erp_bc_mp where code_abarre =".$code_abarre;
+            $queryverif=mysql_query($reqverif);
+            if(mysql_num_rows($queryverif)>0){
+                $Emp = "0" ; 
+                while($enregEC = mysql_fetch_array($queryverif)){
+                    $Emp = $enregEC["codeinterne"] ; 
+                }
+                echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="gest_MP.php?Emp='.$Emp.'&err=1" </SCRIPT>';  
+                exit;
+            }
+
+
+
+
+
+
+            $sql="INSERT INTO `erp_bc_mp`(`classe` ,`codeinterne` ,`code_abarre` ,`designation` , `prix`) VALUES
 			('".$classe."' ,'".$code_interne."' ,'".$code_abarre."' ,'".$designation."' ,'".$prix."')";
 			
 			//Log
@@ -57,8 +76,19 @@ if(isset($_POST['enregistrer_mail'])){
 			
 			$sql1="INSERT INTO `erp_bc_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";
 			$req=mysql_query($sql1);			
-		    }
-	        else{
+
+
+           
+
+          
+          
+
+
+         
+        
+        }
+            
+	     else{
 			$sql="UPDATE `erp_bc_mp` SET `classe`='".$classe."' , `codeinterne`='".$code_interne."' , `code_abarre` = '".$code_abarre."' , `designation`='".$designation."',`prix`='".$prix."' WHERE id=".$id;
 			
 			//Log
@@ -72,7 +102,7 @@ if(isset($_POST['enregistrer_mail'])){
 		}
 		$req=mysql_query($sql);
 
-		echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="?suc=1" </SCRIPT>';
+		// echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="?suc=1" </SCRIPT>';
 
 }
 	$classe		    = "" ;
@@ -117,6 +147,12 @@ if(isset($_POST['classe_LP'])){
                             <?php if($_GET['suc']=='1'){ ?>
                             <font color="green" style="background-color:#FFFFFF;">
                                 <center>Enregistrement effectué avec succès</center>
+                            </font><br /><br />
+                            <?php } }?>
+                            <?php if(isset($_GET['err'])){ ?>
+                            <?php if($_GET['err']=='1'){ ?>
+                            <font color="red" style="background-color:#FFFFFF;">
+                                <center>Enregistrement n'est pas effectué car le Code a barre existe déja dans la matiere premiere : <?php echo $_GET["Emp"] ; ?></center>
                             </font><br /><br />
                             <?php } }?>
                             <form action="" method="POST">

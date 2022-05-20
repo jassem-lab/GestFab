@@ -1111,7 +1111,7 @@ $pdf->AddPage();
 	$r1     = 10;
 	$r2     = $r1 + 12;
 	$pdf->SetXY( $r1, $y1+10);
-	$pdf->MultiCell( 140, 4,(utf8_decode("Liste des produits semis-finis ")));		
+	$pdf->MultiCell( 140, 4,(utf8_decode("Liste des produits finis ")));		
 
 	$y1 = $y1+5 ;
 	$pdf->SetFont('Arial','B',10);
@@ -1124,37 +1124,38 @@ $pdf->AddPage();
 
     $total_tt=0;
     $total=0;$tot_qte=0;
-    $pdf->SetWidths(array(60,40,40,30,20));
+    $pdf->SetWidths(array(30,40,40,30,30,20));
     srand(microtime()*1000000);
     $pdf->Ln();$pdf->Ln();
     $des="";
-    $pdf->RowHead(array((utf8_decode("Code Interne")),(utf8_decode("Code a barre")),(utf8_decode("Designation")),(utf8_decode("Moule")),utf8_decode("Coût")));
+    $pdf->RowHead(array((utf8_decode("Code Interne")),(utf8_decode("Code à barre")),(utf8_decode("Designation")),(utf8_decode("Prix")),(utf8_decode("Type Emballage")),utf8_decode("Coût")));
 
 
-	$req="select * from erp_bc_produitsf order by code_interne ";
+	$req="select * from erp_bc_produits order by code_interne ";
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
 		$id					=	$enreg["id"] ;	
 		$code				=	$enreg["code_interne"] ;
 		$designation		=	$enreg["designation"] ;
-		$moule	        	=	$enreg["moule"] ;
+		$emballage	        	=	$enreg["emballage"] ;
 		$code_barre			=	$enreg["code_barre"] ;
-        $prix               =   $enreg["prix"] ; 
+        $prix               =   $enreg["prix_unitaire"] ; 
+        $prix_vente               =   $enreg["prix"] ; 
 		$moule				=	0 ; 
-		$reqM = "select * from erp_bc_moule where id =".$moule ;
+		$reqM = "select * from erp_bc_emballage where id =".$emballage ;
 		$queryM = mysql_query($reqM) ; 
 		while($enregM = mysql_fetch_array($queryM)){
-			$moule = $enregM["moule"] ; 
+			$type = $enregM["type"] ; 
 		}  
 
 
 		$pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
-		$pdf->Row(array($code,$code_barre,$designation,$moule,$prix));	
+		$pdf->Row(array($code,$code_barre,$designation,$prix_vente,$type,$prix));	
 
 	}
 
-$filename="liste_semis-finis.pdf";
+$filename="liste_finis.pdf";
 $pdf->Output($filename, 'I');
 	
 
