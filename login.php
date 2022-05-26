@@ -7,7 +7,7 @@ include('connexion/cn.php');
 
 ?>
 <?php
-if ((isset($_SESSION['erp_bc_MAILUSER']))) {
+if ((isset($_SESSION['erp_fab_MAILUSER']))) {
 	echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="dashbord.php" </SCRIPT>';
 	exit;
 }
@@ -36,18 +36,18 @@ if (isset($_POST['username'])) {
 	$MOTDEPASSE = addslashes($_POST["userpassword"]);
 
 	$idprofil = 0;
-	$reqTestExistEmail = " select * from erp_bc_utilisateurs where  mail='" . $LOGIN . "' and motdepasse='" . $MOTDEPASSE . "'";
+	$reqTestExistEmail = " select * from erp_fab_utilisateurs where  mail='" . $LOGIN . "' and motdepasse='" . $MOTDEPASSE . "'";
 	$queryTestExistEmail = mysql_query($reqTestExistEmail);
 	if (mysql_num_rows($queryTestExistEmail) != 0) {
 		while ($enregTestExistEmail = mysql_fetch_array($queryTestExistEmail)) {
 			$IDUTILISATEUR = $enregTestExistEmail['id'];
-			$MAIL = $enregTestExistEmail['mail'];
-			$idprofil = $enregTestExistEmail['idprofil'];
+			$MAIL 		   = $enregTestExistEmail['mail'];
+			$idprofil 	   = $enregTestExistEmail['idprofil'];
 
-			$_SESSION['erp_bc_IDUSER'] = $IDUTILISATEUR;
-			$_SESSION['erp_bc_USER'] = $enregTestExistEmail['nom'] . ' ' . $enregTestExistEmail['prenom'];
-			$_SESSION['erp_bc_MAILUSER'] = $MAIL;
-			$_SESSION['erp_bc_PROFIL'] = $idprofil;
+			$_SESSION['erp_fab_IDUSER'] = $IDUTILISATEUR;
+			$_SESSION['erp_fab_USER'] = $enregTestExistEmail['nom'] . ' ' . $enregTestExistEmail['prenom'];
+			$_SESSION['erp_fab_MAILUSER'] = $MAIL;
+			$_SESSION['erp_fab_PROFIL'] = $idprofil;
 
 			if($enregTestExistEmail['archive']==1){
 				echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="?err=nocpt1" </SCRIPT>';
@@ -131,7 +131,7 @@ if (isset($_POST['username'])) {
             </div>
 
 				<div class="m-t-40 text-center">
-							<p class="text-muted"><b  style="color:white">  © 2022 Gestion des commandes <br> Application créée par  </b><a href="http://www.deltawebit.com/contact.php" target="_blank"><b  style="color:orange">Delta Web Information Technology</b></a></b></p>
+							<p class="text-muted"><b  style="color:white">  © 2022 Plateforme de Gestion et de Suivi  de Stock<br> Application créée par  </b><a href="http://www.macsi-centre.com/contact.php" target="_blank"><b  style="color:orange">MACSI Centre</b></a></b></p>
 				</div>
 
         </div>

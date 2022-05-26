@@ -39,7 +39,7 @@
 
     function Imprimer(id) {
         if (confirm('Confirmez-vous cette action?')) {
-            var myMODELE_A4 = window.open("print/nomenclatures_pf.php?ID=" + id, "_blank",
+            var myMODELE_A4 = window.open("print/imprimerpsf.php?ID=" + id, "_blank",
                 "toolbar=no, scrollbars=yes, resizable=no, top=500, left=500, width=700, height=600");
         }
     }
@@ -63,7 +63,18 @@ if(isset($_POST['enregistrer_mail'])){
 	
 	if($id=="0")
 		{
-			$sql="INSERT INTO `erp_bc_produitsf`(`code_interne`, `code_barre`, `designation`, `moule`) VALUES
+                $reqverif="select * from erp_bc_produitsf where code_barre =".$code_barre;
+                $queryverif=mysql_query($reqverif);
+                if(mysql_num_rows($queryverif)>0){
+                    $Emp = "0" ; 
+                    while($enregEC = mysql_fetch_array($queryverif)){
+                        $Emp = $enregEC["code_interne"] ; 
+                    }
+                    echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="gest_MP.php?Emp='.$Emp.'&err=1" </SCRIPT>';  
+                    exit;
+                }
+                
+                $sql="INSERT INTO `erp_bc_produitsf`(`code_interne`, `code_barre`, `designation`, `moule`) VALUES
 			('".$code."','".$code_barre."','".$designation."' ,'".$moule."')";
 			
 			//Log
@@ -103,6 +114,7 @@ if(isset($_POST['enregistrer_mail'])){
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
+        $id                 =   $enreg["id"] ; 
 		$code				=	$enreg["code_interne"] ;
 		$designation		=	$enreg["designation"] ;
 		$moule		    	=	$enreg["moule"] ;
@@ -122,6 +134,13 @@ if(isset($_POST['enregistrer_mail'])){
                             <?php if($_GET['suc']=='1'){ ?>
                             <font color="green" style="background-color:#FFFFFF;">
                                 <center>Enregistrement effectué avec succès</center>
+                            </font><br /><br />
+                            <?php } }?>
+                            <?php if(isset($_GET['err'])){ ?>
+                            <?php if($_GET['err']=='1'){ ?>
+                            <font color="red" style="background-color:#FFFFFF;">
+                                <center>Enregistrement n'est pas effectué car le Code a barre existe déja dans la
+                                    matiere premiere : <?php echo $_GET["Emp"] ; ?></center>
                             </font><br /><br />
                             <?php } }?>
                             <form action="" method="POST">
@@ -168,6 +187,11 @@ if(isset($_POST['enregistrer_mail'])){
                                             Enregistrer
                                         </button>
                                         <input class="form-control" type="hidden" name="enregistrer_mail">
+                                        <a href="javascript:Imprimer('<?php echo $code; ?>')"
+                                            class="btn btn-warning waves-effect waves-light"
+                                            style="background-color: blue;color: white;">
+                                            <span class="glyphicon glyphicon-print"></span>
+                                        </a>
                                     </div>
                                 </div>
 
@@ -232,6 +256,7 @@ if(isset($_POST['mp'])){
                                         <th><b>Code à barre</b></th>
                                         <th><b>Designation</b></th>
                                         <th><b>Moule</b></th>
+                                        <th><b>Prix Unitaire</b></th>
                                         <th><b>Etat</b></th>
                                         <th><b>Action</b></th>
                                     </tr>
@@ -244,7 +269,7 @@ if(isset($_POST['mp'])){
 	$designation		=	"";
 	$moule  			=	"";
 	$code_barre			=	"";
-
+    $prix               =   ""; 
 
 	$req="select * from erp_bc_produitsf where 1=1 ".$reqMp." order by code_interne ";
 	$query=mysql_query($req);
@@ -255,7 +280,14 @@ if(isset($_POST['mp'])){
 		$designation		=	$enreg["designation"] ;
 		$moule	        	=	$enreg["moule"] ;
 		$code_barre			=	$enreg["code_barre"] ;
-	
+        $prix               =   $enreg["prix"] ; 
+	$reqP="select * from erp_bc_nomenclatures where 1=1 and code_produit=".$id ; 
+    $queryP = mysql_query($reqP);
+    while($enregP= mysql_fetch_array($queryP)){
+        $quantite   =  $enregP["quantite"]  ;
+    }
+
+    
 	?>
                                     <tr>
                                         <td><?php echo $code; ?></td>
@@ -268,7 +300,7 @@ if(isset($_POST['mp'])){
                                             echo $enregM["moule"] ; 
                                         }
                                         ?></td>
-
+                                        <td><?php echo $prix ?></td>
                                         <td>
                                             <?php if($enreg['archive']==0){ ?>
                                             <b style="color:green"> Actif </b>

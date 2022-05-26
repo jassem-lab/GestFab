@@ -2,7 +2,7 @@
 	session_start(); 
 	include('../connexion/cn.php');  
  
-    $idphase   				= $_POST['idphase']; 
+    $idservice   				= $_POST['idservice']; 
 	$idproduit			   	= $_POST['idproduit']; 
 ?>
 
@@ -16,12 +16,12 @@
 	</thead>
 	<tbody>	
 <?php
-	$reqnom="select * from erp_nomenclature where idproduit=".$idproduit." and idphase=".$idphase;
+	$reqnom="select * from erp_fab_nomenclature where idproduit=".$idproduit." and idservice=".$idservice;
 	$querynom=mysql_query($reqnom);
 	while($enregnom=mysql_fetch_array($querynom))
 	{
 		$mp="";
-		$reqmp="select * from erp_matieres where id=".$enregnom['idmp'];
+		$reqmp="select * from erp_fab_mp where id=".$enregnom['idmp'];
 		$querymp=mysql_query($reqmp);
 		while($enregmp=mysql_fetch_array($querymp)){
 			$mp	= $enregmp['code'];
@@ -62,7 +62,7 @@
 
 	$(".btnModif1").on("click", function(){
 		var id = $(this).data('id'); 
-		var idphase=<?php echo $_POST['idphase']; ?>;
+		var idservice=<?php echo $_POST['idservice']; ?>;
 		var idproduit=<?php echo $_POST['idproduit']; ?>;
 		var qte = $("#qtemp"+id).val(); 
 		
@@ -80,12 +80,12 @@
 							
 							if(xmlhttp_listemps.status==200 && xmlhttp_listemps.readyState==4){
 								
-								$('#listeMP'+idphase).html(xmlhttp_listemps.responseText);
+								$('#listeMP'+idservice).html(xmlhttp_listemps.responseText);
 							}	
 						}
 						xmlhttp_listemps.open("POST","page_json/json_liste_mps.php",true);
 						xmlhttp_listemps.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-						xmlhttp_listemps.send("idproduit="+idproduit+"&idphase="+idphase);	
+						xmlhttp_listemps.send("idproduit="+idproduit+"&idservice="+idservice);	
 						
 						//Refraiche la liste des MPs
 							if (window.XMLHttpRequest)
@@ -98,12 +98,12 @@
 								
 								if(xmlhttp_selectmps.status==200 && xmlhttp_selectmps.readyState==4){
 									
-									$('#selectMP'+idphase).html(xmlhttp_selectmps.responseText);
+									$('#selectMP'+idservice).html(xmlhttp_selectmps.responseText);
 								}	
 							}
 							xmlhttp_selectmps.open("POST","page_json/json_selectmp.php",true);
 							xmlhttp_selectmps.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-							xmlhttp_selectmps.send("idproduit="+idproduit+"&idphase="+idphase);	
+							xmlhttp_selectmps.send("idproduit="+idproduit+"&idservice="+idservice);	
 						//Fin refraiche liste des MPs	
 				}
 			}, 'json');
@@ -114,7 +114,7 @@
 
 	$(".btnDelete").on("click", function(){
 		var id = $(this).attr('id');
-		var idphase=<?php echo $_POST['idphase']; ?>;
+		var idservice=<?php echo $_POST['idservice']; ?>;
 		var idproduit=<?php echo $_POST['idproduit']; ?>;
 		
 		if(confirm('Confirmez-vous la suppression?')){
@@ -131,12 +131,12 @@
 							
 							if(xmlhttp_listemps.status==200 && xmlhttp_listemps.readyState==4){
 								
-								$('#listeMP'+idphase).html(xmlhttp_listemps.responseText);
+								$('#listeMP'+idservice).html(xmlhttp_listemps.responseText);
 							}	
 						}
 						xmlhttp_listemps.open("POST","page_json/json_liste_mps.php",true);
 						xmlhttp_listemps.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-						xmlhttp_listemps.send("idproduit="+idproduit+"&idphase="+idphase);	
+						xmlhttp_listemps.send("idproduit="+idproduit+"&idservice="+idservice);	
 						
 						//Refraiche la liste des MPs
 							if (window.XMLHttpRequest)
@@ -149,12 +149,12 @@
 								
 								if(xmlhttp_selectmps.status==200 && xmlhttp_selectmps.readyState==4){
 									
-									$('#selectMP'+idphase).html(xmlhttp_selectmps.responseText);
+									$('#selectMP'+idservice).html(xmlhttp_selectmps.responseText);
 								}	
 							}
 							xmlhttp_selectmps.open("POST","page_json/json_selectmp.php",true);
 							xmlhttp_selectmps.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-							xmlhttp_selectmps.send("idproduit="+idproduit+"&idphase="+idphase);	
+							xmlhttp_selectmps.send("idproduit="+idproduit+"&idservice="+idservice);	
 						//Fin refraiche liste des MPs	
 				}
 			}, 'json');

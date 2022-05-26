@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<h4 class="page-title">Gestion des clients</h4>
-				<br> Utilisateur : <?php echo $_SESSION['erp_bc_USER']; ?>
+				<br> Utilisateur : <?php echo $_SESSION['erp_fab_USER']; ?>
 			</div>
 		</div>
 	</div>
@@ -57,30 +57,30 @@ if(isset($_POST['enregistrer_mail'])){
 	
 	if($id=="0")
 		{
-			// $sql="INSERT INTO `erp_bc_clients`(`raisonsocial`, `adresse`, `pays`, `telephone`, `mail`, `personne`, `gsm`) VALUES
+			// $sql="INSERT INTO `erp_fab_clients`(`raisonsocial`, `adresse`, `pays`, `telephone`, `mail`, `personne`, `gsm`) VALUES
 			// ('".$raisonsocial."','".$adresse."','".$pays."' ,'".$telephone."' ,'".$mail."' ,'".$personne."' ,'".$gsm."' )";
 			
 			//Log
 			$dateheure=date('Y-m-d H:i:s');
-			$iduser=$_SESSION['erp_bc_IDUSER'];
+			$iduser=$_SESSION['erp_fab_IDUSER'];
 			$document="Fiche client";
 			$action="Création de compte client :".$raisonsocial;
 			
-			$sql1="INSERT INTO `erp_bc_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";
+			$sql1="INSERT INTO `erp_fab_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";
 			$req=mysql_query($sql1);	
 			
 		}
 	else{
-			$sql="UPDATE `erp_bc_clients` SET `raisonsocial`='".$raisonsocial."',`adresse`='".$adresse."',
+			$sql="UPDATE `erp_fab_clients` SET `raisonsocial`='".$raisonsocial."',`adresse`='".$adresse."',
 			`pays`='".$pays."', `telephone`='".$telephone."' , `mail`='".$mail."' , `personne`='".$personne."' , `gsm`='".$gsm."' WHERE id=".$id;
 			
 			//Log
 			$dateheure=date('Y-m-d H:i:s');
-			$iduser=$_SESSION['erp_bc_IDUSER'];
+			$iduser=$_SESSION['erp_fab_IDUSER'];
 			$document="Fiche client";
 			$action="Modification de compte client :".$raisonsocial." - adresse:".$adresse." - telephone:".$telephone." - mail=".$mail." - personne:".$personne."";
 			
-			$sql1="INSERT INTO `erp_bc_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";$req=mysql_query($sql1);			
+			$sql1="INSERT INTO `erp_fab_log`(`dateheure`, `idutilisateur`, `document`, `action`) VALUES ('".$dateheure."','".$iduser."','".$document."','".mysql_real_escape_string($action)."')";$req=mysql_query($sql1);			
 		}
 		$req=mysql_query($sql);
 
@@ -94,7 +94,7 @@ if(isset($_POST['enregistrer_mail'])){
 	$gsm				=	"" ;	
 	$personne			=	"" ;
 	$mail				=	"" ;	
-	$req="select * from erp_bc_clients where id=".$id;
+	$req="select * from erp_fab_clients where id=".$id;
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
@@ -202,7 +202,7 @@ if(isset($_POST['perso'])){
 											<select class="form-control select2" name="client">
 												<option value=""> Sélectionner un client </option>
 												<?php
-												$req="select * from erp_bc_clients order by raisonsocial";
+												$req="select * from erp_fab_clients order by raisonsocial";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
@@ -233,7 +233,6 @@ if(isset($_POST['perso'])){
                                             <th><b>Email</b></th>
 											<th><b>Téléphone</b></th>
 											<th><b>personne à contacter</b></th>
-											<th><b>Etat</b></th>
 											<th><b>Action</b></th>
                                         </tr>
                                         </thead>
@@ -245,7 +244,7 @@ if(isset($_POST['perso'])){
 	$mail	=	"" ;	
 	$id		=	"0" ;		
 	$i		=	"0" ;
-	$req="select * from erp_bc_clients where 1=1 ".$reqCli.$reqPerso." order by raisonsocial ";
+	$req="select * from erp_fab_clients where 1=1 ".$reqCli.$reqPerso." order by raisonsocial ";
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
@@ -261,27 +260,7 @@ if(isset($_POST['perso'])){
 											 <td><?php echo $enreg["telephone"]; ?></td>
 											 <td><?php echo $enreg["personne"]; ?></td>
 											 <td>
-												<?php if($enreg['archive']==0){ ?>
-													<b style="color:green"> Actif </b>
-												<?php } else{ ?>
-													<b style="color:red"> Inactif </b>
-												<?php } ?>
-											 
-											 </td>
-											 <td>
 												<a href="gest_clients.php?ID=<?php echo $id; ?>" class="btn btn-warning waves-effect waves-light">Modifier</a>
-												<?php if ($enreg["archive"]=="0"){ ?>
-													<a href="Javascript:Archiver('<?php echo $id; ?>')" class="btn btn-danger waves-effect waves-light">Archiver</a>						
-												<?php } else {?>
-													<a href="Javascript:Unarchiver('<?php echo $id; ?>')" class="btn btn-dark waves-effect waves-light">Unarchiver</a>
-												<?php }?>	
-												<?php 
-												/*$reqc='select * from telec_requete where idclient='.$id;
-												$queryc=mysql_query($reqc);
-												$numc=mysql_num_rows($queryc);
-												if($numc=='0'){ ?>
-												<a href="Javascript:Supprimer('<?php echo $id; ?>')" class="btn btn-danger waves-effect waves-light" style="background-color:brown">Supprimer</a>
-												<?php }*/ ?>
 											 </td>
 										</tr>
 	<?php } ?>

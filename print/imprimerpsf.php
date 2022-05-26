@@ -1097,76 +1097,65 @@ $pdf->AddPage();
 //$pdf->Image('../assets/entete.png', -2, -3, 220 , 0, 'PNG');
 //$pdf->Image('../assets/pied.png', 0, 276, 210 , 0, 'PNG');
 
-$date				=	"";
-$reference			=	"";
-$id					=	0;
-$client				=	"";
-$montant			=	"0";
-$stock				=	"0";
-$id					=	$_GET['ID'];
-$code_produit       = 0 ; 
-
-$req="select * from erp_bc_nomenclatures where id=".$id;	
-$query=mysql_query($req);
-while($enreg=mysql_fetch_array($query))
-{
-		$id								=	$enreg["id"] ;	
-		$mp_fini						=	$enreg["code_interne"] ;
-		$quantite						=	$enreg["quantite"] ;
-		$code_produit					=	$enreg["code_produit"] ;
-		
-		$date							=	date("d/m/Y")   ;
-}
-    $produit="";
-    $idProduit="";
-    $reqprd="select * from erp_bc_produitsf where id=".$code_produit ;
-    $queryprd=mysql_query($reqprd);
-    while($enregprd=mysql_fetch_array($queryprd)){
-        $produit	=	$enregprd['code_interne'];
-        $idProduit  =   $enregprd['id'] ; 
-    }
-
-	$pdf->fact_dev("Produit", $produit);
+	
 	$pdf->Ln();$pdf->Ln();$pdf->Ln();
 		
-	$pdf->addDate( $date );
-	$pdf->addPageNumber("1");
+	$date = date('d/m/Y');
+
+
 	
+	$y1 = 10 ;
+	$pdf->SetFont('Arial','B',10);
+	$pdf->SetTextColor(0,0, 0);
+	
+	$r1     = 10;
+	$r2     = $r1 + 12;
+	$pdf->SetXY( $r1, $y1+10);
+	$pdf->MultiCell( 140, 4,(utf8_decode("Liste des produits semis-finis ")));		
+
+	$y1 = $y1+5 ;
+	$pdf->SetFont('Arial','B',10);
+	$pdf->SetTextColor(0,0, 0);
+	
+	$r1     = 10;
+	$r2     = $r1 + 12;
+	$pdf->SetXY( $r1, $y1+10);
+	$pdf->MultiCell( 140, 4,(utf8_decode("Date d'impression: ".$date)));	
 
     $total_tt=0;
     $total=0;$tot_qte=0;
-    $pdf->SetWidths(array(60,20));
+    $pdf->SetWidths(array(60,40,40,30,20));
     srand(microtime()*1000000);
     $pdf->Ln();$pdf->Ln();
     $des="";
-    $pdf->RowHead(array((utf8_decode("Matière premiere")),(utf8_decode("Qauntité"))));
+    $pdf->RowHead(array((utf8_decode("Code Interne")),(utf8_decode("Code a barre")),(utf8_decode("Designation")),(utf8_decode("Moule")),utf8_decode("Coût")));
 
 
-    
+	$req="select * from erp_bc_produitsf order by code_interne ";
+	$query=mysql_query($req);
+	while($enreg=mysql_fetch_array($query))
+	{
+		$id					=	$enreg["id"] ;	
+		$code				=	$enreg["code_interne"] ;
+		$designation		=	$enreg["designation"] ;
+		$moule	        	=	$enreg["moule"] ;
+		$code_barre			=	$enreg["code_barre"] ;
+        $prix               =   $enreg["prix"] ; 
+		$moule				=	0 ; 
+		$reqM = "select * from erp_bc_moule where id =".$moule ;
+		$queryM = mysql_query($reqM) ; 
+		while($enregM = mysql_fetch_array($queryM)){
+			$moule = $enregM["moule"] ; 
+		}  
 
-  echo  $req1 ="select * from erp_bc_nomenclatures where code_produit=".$idProduit ; 
-    $query1 = mysql_query($req1) ; 
-    while($enreg1 = mysql_fetch_array($query1)){
-        $mp  			= 	$enreg1["code_interne"] ; 
-        $quantite  		= 	$enreg1["quantite"] ; 
-        $idNm 			=   $enreg1["id"] ; 
-        $reqNom = "select * from erp_bc_mp where id=".$mp ; 
-        $queryNom = mysql_query($reqNom) ; 
-        while($enregNom = mysql_fetch_array($queryNom)){
-            $mp= $enregNom["codeinterne"];
-         }   
-             $pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
-             $pdf->Row(array($mp, $quantite));		
 
-    }
+		$pdf->SetFont('Arial','', 10); // Font Name, Font Style (eg. 'B' for Bold), Font Size
+		$pdf->Row(array($code,$code_barre,$designation,$moule,$prix));	
 
-   
+	}
 
-$filename=$reference.".pdf";
+$filename="liste_semis-finis.pdf";
 $pdf->Output($filename, 'I');
-	
-
-	
 	
 
 

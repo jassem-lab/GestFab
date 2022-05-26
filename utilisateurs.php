@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<h4 class="page-title">Gestion des utilisateurs</h4>
-				<br> Utilisateur : <?php echo $_SESSION['erp_bc_USER']; ?>
+				<br> Utilisateur : <?php echo $_SESSION['erp_fab_USER']; ?>
 			</div>
 		</div>
 	</div>
@@ -55,11 +55,11 @@ if(isset($_POST['enregistrer_mail'])){
 	
 	if($id=="0")
 		{
-			$sql="INSERT INTO `erp_bc_utilisateurs`(`nom`, `prenom`, `mail`, `motdepasse`, `idprofil`) VALUES 
+			$sql="INSERT INTO `erp_fab_utilisateurs`(`nom`, `prenom`, `mail`, `motdepasse`, `idprofil`) VALUES 
 			('".$nom."','".$prenom."' ,'".$mail."' ,'".$motdepasse."' ,'".$idprofil."' )";
 		}
 	else{
-			$sql="UPDATE `erp_bc_utilisateurs` SET `nom`='".$nom."',`prenom`='".$prenom."',`mail`='".$mail."',`motdepasse`='".$motdepasse."',
+			$sql="UPDATE `erp_fab_utilisateurs` SET `nom`='".$nom."',`prenom`='".$prenom."',`mail`='".$mail."',`motdepasse`='".$motdepasse."',
 			`idprofil`='".$idprofil."' WHERE id=".$id;
 		}
 		$req=mysql_query($sql);
@@ -73,7 +73,7 @@ if(isset($_POST['enregistrer_mail'])){
 	$motdepasse			=	"";
 	$idprofil			=	"";
 	
-	$req="select * from erp_bc_utilisateurs where id=".$id;
+	$req="select * from erp_fab_utilisateurs where id=".$id;
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
@@ -120,7 +120,7 @@ if(isset($_POST['enregistrer_mail'])){
 										<select class="form-control select2" name="idprofil" required>
 											<option value=""> Sélectionner un profil </option>
 											<?php
-											$req="select * from erp_bc_profil order by profil";
+											$req="select * from erp_fab_profil order by profil";
 											$query=mysql_query($req);
 											while($enreg=mysql_fetch_array($query)){
 											?>
@@ -180,7 +180,7 @@ if(isset($_POST['profil'])){
 											<select class="form-control select2" name="utilisateur">
 												<option value=""> Sélectionner un utilisateur </option>
 												<?php
-												$req="select * from erp_bc_utilisateurs order by nom";
+												$req="select * from erp_fab_utilisateurs order by nom";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
@@ -193,7 +193,7 @@ if(isset($_POST['profil'])){
 											<select class="form-control select2" name="profil">
 												<option value=""> Sélectionner un profil </option>
 												<?php
-												$req="select * from erp_bc_profil order by profil";
+												$req="select * from erp_fab_profil order by profil";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
@@ -233,7 +233,7 @@ if(isset($_POST['profil'])){
 	$profil				=	"0";
 
 	
-	$req="select * from erp_bc_utilisateurs where 1=1 ".$reqEmp.$reqProfil." order by nom ";
+	$req="select * from erp_fab_utilisateurs where 1=1 ".$reqEmp.$reqProfil." order by nom ";
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
@@ -245,7 +245,7 @@ if(isset($_POST['profil'])){
 		$profil				=	$enreg["idprofil"] ;
 
 		
-		$reqprofil="select * from erp_bc_profil where id=".$profil;
+		$reqprofil="select * from erp_fab_profil where id=".$profil;
 		$queryprofil=mysql_query($reqprofil);
 		while($enregprofil=mysql_fetch_array($queryprofil)){
 			$nomprofil			=	$enregprofil["profil"] ;
@@ -271,13 +271,6 @@ if(isset($_POST['profil'])){
 												<?php } else {?>
 													<a href="Javascript:Unarchiver('<?php echo $id; ?>')" class="btn btn-dark waves-effect waves-light">Unarchiver</a>
 												<?php }?>	
-												<?php 
-												/*$reqc='select * from telec_requete where idutilisateur='.$id;
-												$queryc=mysql_query($reqc);
-												$numc=mysql_num_rows($queryc);
-												if($numc=='0'){ ?>
-												<a href="Javascript:Supprimer('<?php echo $id; ?>')" class="btn btn-danger waves-effect waves-light" style="background-color:brown">Supprimer</a>
-												<?php }*/ ?>
 											 </td>
 										</tr>
 	<?php } ?>

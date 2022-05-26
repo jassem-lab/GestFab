@@ -32,17 +32,38 @@ if(isset($_POST['enregistrer_mail'])){
 
 	$mp					=	addslashes($_POST["mp"]) ;
 	$quantite			=	addslashes($_POST["quantite"]) ;
+	$prix		       	= 0 ; 
+
+    $prixUnitaire = 0 ; 
+
+    $reqPrix = "select * from erp_bc_mp where id=".$mp ; 
+    $queryPrix=mysql_query($reqPrix) ;
+    while($enregPrix = mysql_fetch_array($queryPrix)){
+        $prixUnitaire = $enregPrix["prix"] ; 
+    }
+    
+    $prix = $prixUnitaire * $quantite ; 
 
 
 	$req="select * from erp_bc_nomenclatures where code_interne=".$mp." and code_produit=".$produit;
 	$query=mysql_query($req);
 	if(mysql_num_rows($query)>0){
-		$sql="UPDATE erp_bc_nomenclatures set quantite=".$quantite." where code_interne=".$mp." and code_produit=".$produit;
+		$sql="UPDATE erp_bc_nomenclatures set quantite=".$quantite." , prix=".$prix." where code_interne=".$mp." and code_produit=".$produit;
 	} else{
-		$sql="INSERT INTO `erp_bc_nomenclatures`(`code_interne`, `quantite`, `code_produit`) VALUES ('".$mp."','".$quantite."' ,'".$produit."')";
+		$sql="INSERT INTO `erp_bc_nomenclatures`(`code_interne`, `quantite`, `code_produit` ,``prix`) VALUES ('".$mp."','".$quantite."' ,'".$produit."' , '".$prix."')";
+       
 	}
-
 		$req=mysql_query($sql);
+		
+
+        $reqTot = "SELECT sum(prix) as prix_total FROM `erp_bc_nomenclatures` WHERE code_produit=".$produit ; 
+        $queryTot= mysql_query($reqTot) ; 
+        while($enregTot = mysql_fetch_array($queryTot)){
+            $prixTotal = $enregTot["prix_total"] ; 
+        }
+
+        $sql2="UPDATE erp_bc_produitsf set prix=".$prixTotal." where code_interne=".$codeProduit;
+        $req=mysql_query($sql2);
 
 		echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="nomenclatures.php?ID='.$_GET['ID'].'"?suc=1" </SCRIPT>';
 
@@ -60,7 +81,7 @@ if(isset($_GET['ID'])){
 	}
 
 
-
+    $prixTotal = 0 ; 
 	$quantite = 0;
 	$mp		  = 0;
 	$req="select * from erp_bc_nomenclatures where id=".$idd;
@@ -68,7 +89,12 @@ if(isset($_GET['ID'])){
 	while($enreg=mysql_fetch_array($query)){
 		$quantite = $enreg['quantite'];
 		$mp		  = $enreg['code_interne'];	
+		$prix		  = $enreg['prix'];	
+
+
+    
 	}
+
 ?>
     <div class="page-title-box">
         <div class="container-fluid">
@@ -125,17 +151,22 @@ if(isset($_GET['ID'])){
 											echo $code ; 
 												?>
                                         </option>
-
-
                                         <?php } ?>
                                     </select>
                                 </div>
+
                                 <?php if($_SESSION['erp_bc_PROFIL']==1){ ?>
                                 <div class="col-lg-3">
                                     <b>Quantité correspondante</b>
                                     <input type="text" class="form-control" placeholder="quantité" name="quantite"
                                         value="<?php
 											echo $quantite ?>">
+                                </div>
+                                <div class="col-lg-3">
+                                    <b>Prix Total</b>
+                                    <input readonly type="number" class="form-control" placeholder="Prix" value="<?php
+											 echo $prixTotal ; 
+                                            ?>">
                                 </div>
                                 <br>
                                 <button type="submit" class="btn btn-primary waves-effect waves-light">
@@ -154,6 +185,7 @@ if(isset($_GET['ID'])){
                     <tr>
                         <th><b>Matiere premiere</b></th>
                         <th><b>Quantité correspondante</b></th>
+                        <th><b>Prix </b></th>
                         <th><b>Action</b></th>
                     </tr>
                 </thead>
@@ -165,6 +197,7 @@ if(isset($_GET['ID'])){
 						$mp  			= 	$enreg["code_interne"] ; 
 						$quantite  		= 	$enreg["quantite"] ; 
 						$idNm 			=   $enreg["id"] ; 
+                        $Prix   =   $enreg["prix"] ; 
 					?>
                 <tbody>
                     <tr>
@@ -178,6 +211,7 @@ if(isset($_GET['ID'])){
 						
 						?></td>
                         <td><?php echo $quantite ?></td>
+                        <td><?php echo $Prix ?></td>
                         <td>
                             <a href="nomenclatures.php?ID=<?php echo $_GET['ID']; ?>&IDD=<?php echo $enreg["id"]; ?>"
                                 class="btn btn-warning waves-effect waves-light">
@@ -194,5 +228,4 @@ if(isset($_GET['ID'])){
         </div>
     </div>
 </div>
-
 <?php include ("menu_footer/footer.php"); ?>

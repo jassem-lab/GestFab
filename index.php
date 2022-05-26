@@ -2,7 +2,7 @@
 session_start();
 include('connexion/cn.php');
 	
-if  (!isset($_SESSION['erp_bc_MAILUSER'])) 
+if  (!isset($_SESSION['erp_fab_MAILUSER'])) 
 {
 	echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="login.php" </SCRIPT>';
 	exit;

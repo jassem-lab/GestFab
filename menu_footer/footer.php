@@ -3,8 +3,8 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-12">
-			<p class="text-muted"><b  style="color:#102677">  © 2022 Gestion des commandes - Application créée par </b>
-			<a href="http://www.deltawebit.com/contact.php" target="_blank"><b  style="color:red">Delta Web Information Technology</b></a>
+			<p class="text-muted"><b  style="color:#102677">  © 2022 Plateforme de Gestion et de Suivi  de Stock - Application créée par </b>
+			<a href="http://www.macsi-centre.com/contact.php" target="_blank"><b  style="color:red">MACSI Centre</b></a>
 			</p>
 		  </div>
 		</div>
@@ -46,6 +46,9 @@ $(function () {
 		setInterval(function(){
 			loadRefreshNotification();
 		}, 10000);
+		setInterval(function(){
+			loadRefreshActivationBL();
+		}, 50000);		
 		
 		function loadRefreshNotification(){
 			if (window.XMLHttpRequest)
@@ -63,7 +66,27 @@ $(function () {
 			}
 			xmlhttp_Refresh_notifs.open("GET","page_ajax/ajax_refresh_notification.php",true);
 			xmlhttp_Refresh_notifs.send();
-		}			
+		}
+
+		
+		function loadRefreshActivationBL(){
+			if (window.XMLHttpRequest)
+			{// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp_Refresh_bl=new XMLHttpRequest();
+			}else{// code for IE6, IE5
+			  xmlhttp_Refresh_bl=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+
+			xmlhttp_Refresh_bl.onreadystatechange=function(){
+				if (xmlhttp_Refresh_bl.readyState==4 && xmlhttp_Refresh_bl.status==200)
+				{
+					//$("#idListNotifs").html(xmlhttp_Refresh_bl.responseText);
+				}
+			}
+			xmlhttp_Refresh_bl.open("GET","page_ajax/ajaxactivation_bl.php",true);
+			xmlhttp_Refresh_bl.send();
+		}
+		
 });	
 </script>
 

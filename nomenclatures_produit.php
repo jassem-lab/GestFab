@@ -3,7 +3,7 @@
 <script>
 function SupprimerMP(id, idd) {
     if (confirm('Confirmez-vous cette action?')) {
-        document.location.href = "page_js/supprimer_nomenclature_MP.php.php?ID=" + id + "&IDD=" + idd;
+        document.location.href = "page_js/supprimer_nomenclature_MP.php?ID=" + id + "&IDD=" + idd;
     }
 }
 
@@ -76,6 +76,39 @@ if(isset($_POST['enregistrer_mail'])){
 		$req=mysql_query($sql);
 
 
+        //Calcul coût PF
+        $cout=0;
+        $req=" select * from erp_bc_nomenclatures_fini where code_produit=".$produit;
+        $query=mysql_query($req);
+        while($enreg=mysql_fetch_array($query)){
+
+            if($enreg['mp_fini']<>0){
+
+                $reqPrix = "select * from erp_bc_mp where id=".$enreg['mp_fini'] ; 
+                $queryPrix=mysql_query($reqPrix) ;
+                while($enregPrix = mysql_fetch_array($queryPrix)){
+                    $cout =  $cout + ($enregPrix["prix"]*$enreg['quantite']) ; 
+                }
+
+            }
+
+            if($enreg['produit_sf']<>0){
+
+                $reqPrix = "select * from erp_bc_produitsf where id=".$enreg['produit_sf'] ; 
+                $queryPrix=mysql_query($reqPrix) ;
+                while($enregPrix = mysql_fetch_array($queryPrix)){
+                    $cout =  $cout + ($enregPrix["prix"]*$enreg['quantite_sf']) ; 
+                }
+                
+            }
+        }
+
+        $sql="update erp_bc_produits set prix_unitaire=".$cout." where id=".$produit;
+        $requete=mysql_query($sql);
+
+
+
+
         $id=$_GET['ID'];
         echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="nomenclatures_produit.php?ID='.$id.'&suc=1" </SCRIPT>';     
 	}
@@ -94,7 +127,40 @@ if(isset($_POST['enregistrer_mail'])){
         }
     
             $req=mysql_query($sql);
- 
+
+
+
+        //Calcul coût PF
+        $cout=0;
+        $req=" select * from erp_bc_nomenclatures_fini where code_produit=".$produit;
+        $query=mysql_query($req);
+        while($enreg=mysql_fetch_array($query)){
+
+            if($enreg['mp_fini']<>0){
+
+                $reqPrix = "select * from erp_bc_mp where id=".$enreg['mp_fini'] ; 
+                $queryPrix=mysql_query($reqPrix) ;
+                while($enregPrix = mysql_fetch_array($queryPrix)){
+                    $cout =  $cout + ($enregPrix["prix"]*$enreg['quantite']) ; 
+                }
+
+            }
+
+            if($enreg['produit_sf']<>0){
+
+                $reqPrix = "select * from erp_bc_produitsf where id=".$enreg['produit_sf'] ; 
+                $queryPrix=mysql_query($reqPrix) ;
+                while($enregPrix = mysql_fetch_array($queryPrix)){
+                    $cout =  $cout + ($enregPrix["prix"]*$enreg['quantite_sf']) ; 
+                }
+                
+            }
+        }
+
+        $sql="update erp_bc_produits set prix_unitaire=".$cout." where id=".$produit;
+        $requete=mysql_query($sql);
+
+
             $id=$_GET['ID'];
             echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="nomenclatures_produit.php?ID='.$id.'&suc=1" </SCRIPT>';        
     
@@ -110,7 +176,7 @@ if(isset($_POST['enregistrer_mail'])){
             if(mysql_num_rows($query)>0){
                //
             } else{
-            echo    $sql="INSERT INTO `erp_bc_nomenclatures_fini`(`service`,`quantite_service` , `code_produit`) VALUES ('".$service."' ,'".$quantite_service."','".$produit."')";
+                $sql="INSERT INTO `erp_bc_nomenclatures_fini`(`service`,`quantite_service` , `code_produit`) VALUES ('".$service."' ,'".$quantite_service."','".$produit."')";
                 $req=mysql_query($sql);
         
             }
@@ -239,7 +305,7 @@ if(isset($_POST['enregistrer_mail'])){
                                         <thead>
                                             <tr>
                                                 <th><b>Matiere premiere</b></th>
-                                                <th><b>Quantité correspondante</b></th>
+                                                <th><b>Quantité </b></th>
                                                 <th><b>Action</b></th>
                                             </tr>
                                         </thead>
@@ -329,7 +395,7 @@ if(isset($_POST['enregistrer_mail'])){
                                         <thead>
                                             <tr>
                                                 <th><b>Produit SF</b></th>
-                                                <th><b>Quantité correspondante</b></th>
+                                                <th><b>Quantité </b></th>
                                                 <th><b>Action</b></th>
                                             </tr>
                                         </thead>
@@ -485,7 +551,7 @@ if(isset($_POST['enregistrer_mail'])){
                                         <thead>
                                             <tr>
                                                 <th><b>Service</b></th>
-                                                <th><b>Quantité correspondante</b></th>
+                                                <th><b>Quantité </b></th>
                                                 <th><b>Action</b></th>
                                             </tr>
                                         </thead>

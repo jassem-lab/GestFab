@@ -917,9 +917,7 @@ body {
   width: 200px;
   color: #ffffff;
 }
-#topnav .navigation-menu > li .submenu.megamenu > li {
-  width : auto !important; 
- }
+
 .app-search button {
   position: absolute;
   top: 8px;
@@ -1038,7 +1036,7 @@ body {
     z-index: 1000;
     padding: 15px 0;
     list-style: none;
-    
+    min-width: 200px;
     text-align: left;
     visibility: hidden;
     opacity: 0;
@@ -1055,7 +1053,7 @@ body {
   }
   #topnav .navigation-menu > li .submenu.megamenu > li {
     overflow: hidden;
-  
+    width: 200px;
     display: inline-block;
     vertical-align: top;
   }

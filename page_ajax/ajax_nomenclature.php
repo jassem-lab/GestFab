@@ -2,18 +2,18 @@
 	session_start(); 
 	include('../connexion/cn.php');  
  
-    $idphase   				= $_POST['idphase']; 
+    $idservice 				= $_POST['idservice']; 
 	$idproduit			   	= $_POST['idproduit']; 
 	$mp						= $_POST['mp']; 
 	$qte				   	= $_POST['qte']; 
 	$date_maj				= date('d/m/Y H:i:s');
 	
-	$sql="INSERT INTO `erp_nomenclature`(`idphase`, `idproduit`, `idmp`, `quantite`, `idutilisateur_maj`, `date_maj`) VALUES";
-	$sql=$sql." ('".$idphase."','".$idproduit."','".$mp."','".$qte."','".$_SESSION['ERP_IDUSER']."','".$date_maj."')";
+	$sql="INSERT INTO `erp_fab_nomenclature`(`idproduit`, `idservice`, `idmp`, `quantite`) VALUES";
+	$sql=$sql." ('".$idproduit."','".$idservice."','".$mp."','".$qte."')";
 	
 	$requete = mysql_query($sql) or die( mysql_error()) ;	
 	
-	$json = '{"idphase":"'.$idphase.'"}';
+	$json = '{"idservice":"'.$idservice.'"}';
 	json_encode($json);
 	echo $json;		
 
