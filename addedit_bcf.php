@@ -158,7 +158,7 @@ if(isset($_POST['enregistrer_mail'])){
 			}
 						
 		}
-
+		
 			//Mise à jour montant total de BC
 				$total="0";
 				$reqTot="select sum(prix_total) as total from erp_bc_det_bcf where idbc=".$id;
