@@ -3,7 +3,7 @@
 <script>
 function Imprimer() {
     if (confirm('Confirmez-vous cette action?')) {
-        var myMODELE_A4 = window.open("print/imprimer_MPC.php",
+        var myMODELE_A4 = window.open("print/imprimer_vs_mp.php",
             "toolbar=no, scrollbars=yes, resizable=no, top=500, left=500, width=700, height=600");
     }
 }
@@ -15,13 +15,12 @@ function Imprimer() {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <h4 class="page-title">MPs à Commmander</h4>
+                    <h4 class="page-title">Valorisation de Stock des MPs</h4>
                     <br> Utilisateur : <?php echo $_SESSION['erp_fab_USER']; ?>
                 </div>
             </div>
         </div>
     </div>
-
     <?php
 $reqCode="";
 $code="";
@@ -38,7 +37,7 @@ if(isset($_POST['code'])){
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h3>Liste des matières premières</h3>
+                            <h3>Valorisation de Stock des MPs </h3>
                             <form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
                                 <div class="col-xl-12">
                                     <div class="row">
@@ -89,6 +88,18 @@ if(isset($_POST['code'])){
                                     </div>
                                 </div>
                             </form>
+                            <?php
+                            $reqPx = "SELECT SUM( `stock` ) AS stk, SUM( `px_achat` ) AS px FROM `erp_fab_mp`";
+                            $query=mysql_query($reqPx);
+                            while($enreg=mysql_fetch_array($query))
+                            {
+                            $stk = ($enreg['stk']) ;
+                            $px = ($enreg['px']) ;
+                            }
+                            ?>
+                            <h4 class="mt-4"><strong> Prix Total de Stock : <span
+                                        class="badge rounded-pill text-bg-danger"><?php echo $stk * $px ?></span></strong>
+                            </h4>
                             <br>
                             <table class="table mb-0">
                                 <thead>
@@ -100,6 +111,8 @@ if(isset($_POST['code'])){
                                         <th><b>Provenance</b></th>
                                         <th><b>Unité</b></th>
                                         <th><b>Prix d'achat</b></th>
+                                        <th><b>Stock</b></th>
+                                        <th><b>Valeur de stock</b></th>
                                         <th><b>Seuil d’approvisionnement </b></th>
                                         <th><b>MP Consommable </b></th>
 
@@ -166,9 +179,21 @@ if(isset($_POST['code'])){
                                         <td><?php echo $designation; ?></td>
                                         <td><?php echo $code_barre; ?></td>
                                         <td><?php echo $provenance; ?></td>
-                                        <td><?php echo $unite; ?></td>
-                                        <td><?php echo $prix; ?></td>
-                                        <td><?php echo $enreg['seuil']; ?></td>
+                                        <td><span
+                                                class="badge rounded-pill text-bg-primary"><?php echo $unite; ?></span>
+                                        </td>
+                                        <td><span
+                                                class="badge rounded-pill text-bg-primary"><?php echo $enreg["stock"]; ?></span>
+                                        </td>
+
+                                        <td><span class="badge rounded-pill text-bg-warning"><?php echo $prix; ?></span>
+                                        </td>
+                                        <td><span
+                                                class="badge rounded-pill text-bg-info"><?php echo $prix * $enreg["stock"]; ?></span>
+                                        </td>
+                                        <td><span
+                                                class="badge rounded-pill text-bg-danger"><?php echo $enreg['seuil']; ?></span>
+                                        </td>
                                         <td><?php echo $consommable; ?></td>
 
                                     </tr>

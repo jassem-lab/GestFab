@@ -3,7 +3,7 @@
 <script>
 function Imprimer() {
     if (confirm('Confirmez-vous cette action?')) {
-        var myMODELE_A4 = window.open("print/imprimer_MPC.php",
+        var myMODELE_A4 = window.open("print/imprimer_stock_F.php",
             "toolbar=no, scrollbars=yes, resizable=no, top=500, left=500, width=700, height=600");
     }
 }
@@ -15,13 +15,12 @@ function Imprimer() {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <h4 class="page-title">MPs à Commmander</h4>
+                    <h4 class="page-title">Valorisation de Stock Produit Finis</h4>
                     <br> Utilisateur : <?php echo $_SESSION['erp_fab_USER']; ?>
                 </div>
             </div>
         </div>
     </div>
-
     <?php
 $reqCode="";
 $code="";
@@ -38,7 +37,7 @@ if(isset($_POST['code'])){
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <h3>Liste des matières premières</h3>
+                            <h3>Valorisation de Stock des Produit Finis </h3>
                             <form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
                                 <div class="col-xl-12">
                                     <div class="row">
@@ -47,7 +46,7 @@ if(isset($_POST['code'])){
                                             <select class="form-control select2" name="code">
                                                 <option value=""> Sélectionner un code </option>
                                                 <?php
-												$req="select * from erp_fab_mp order by code";
+												$req="select * from erp_fab_produits order by code";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
@@ -89,6 +88,18 @@ if(isset($_POST['code'])){
                                     </div>
                                 </div>
                             </form>
+                            <?php
+                            $reqPx = "SELECT SUM( `stock` ) AS stk, SUM( `prix` ) AS px FROM `erp_fab_produits` where semi = 1";
+                            $query=mysql_query($reqPx);
+                            while($enreg=mysql_fetch_array($query))
+                            {
+                            $stk = ($enreg['stk']) ;
+                            $px = ($enreg['px']) ;
+                            }
+                            ?>
+                            <h4 class="mt-4"><strong> Prix Total de Stock : <span
+                                        class="badge rounded-pill text-bg-danger"><?php echo $stk * $px ?></span></strong>
+                            </h4>
                             <br>
                             <table class="table mb-0">
                                 <thead>
@@ -98,16 +109,16 @@ if(isset($_POST['code'])){
                                         <th><b>Désignation</b></th>
                                         <th><b>Code à barre</b></th>
                                         <th><b>Provenance</b></th>
-                                        <th><b>Unité</b></th>
                                         <th><b>Prix d'achat</b></th>
+                                        <th><b>Stock</b></th>
+                                        <th><b>Valeur de stock</b></th>
                                         <th><b>Seuil d’approvisionnement </b></th>
-                                        <th><b>MP Consommable </b></th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-	$req="select * from erp_fab_mp where 1=1 ".$reqCode." order by code";
+	$req="select * from erp_fab_produits where 1=1 and semi = 1 ".$reqCode." order by code";
 	$query=mysql_query($req);
 	$total=mysql_num_rows($query);
 	
@@ -135,7 +146,7 @@ if(isset($_POST['code'])){
 	$prix				=	"0" ;
 	$type				=	"" ;	
 	$i					=	0;
-	$req="select * from erp_fab_mp where 1=1 and stock >= seuil".$reqCode." order by code  LIMIT $start, $limit";
+	$req="select * from erp_fab_produits where 1=1 and stock >= seuil and semi = 1".$reqCode." order by code  LIMIT $start, $limit";
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
@@ -143,8 +154,7 @@ if(isset($_POST['code'])){
 		$code				=	$enreg["code"] ;
 		$code_barre			=	$enreg["code_barre"] ;
 		$designation		=	$enreg["designation"] ;		
-		$prix				=	$enreg["px_achat"] ;
-		$unite				=	$enreg["unite"] ;
+		$prix				=	$enreg["prix"] ;
 		$i++;
 		
 		$provenance="";
@@ -154,11 +164,7 @@ if(isset($_POST['code'])){
 			$provenance	=	$enreg1['classe'];
 		}
 		
-		if($enreg['consommable']==1){
-			$consommable 	=	'Oui';
-		} else{
-			$consommable 	=	'Non';
-		}
+	
 	?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
@@ -166,10 +172,19 @@ if(isset($_POST['code'])){
                                         <td><?php echo $designation; ?></td>
                                         <td><?php echo $code_barre; ?></td>
                                         <td><?php echo $provenance; ?></td>
-                                        <td><?php echo $unite; ?></td>
-                                        <td><?php echo $prix; ?></td>
-                                        <td><?php echo $enreg['seuil']; ?></td>
-                                        <td><?php echo $consommable; ?></td>
+
+                                        <td><span
+                                                class="badge rounded-pill text-bg-primary"><?php echo $enreg["stock"]; ?></span>
+                                        </td>
+
+                                        <td><span class="badge rounded-pill text-bg-warning"><?php echo $prix; ?></span>
+                                        </td>
+                                        <td><span
+                                                class="badge rounded-pill text-bg-info"><?php echo $prix * $enreg["stock"]; ?></span>
+                                        </td>
+                                        <td><span
+                                                class="badge rounded-pill text-bg-danger"><?php echo $enreg['seuil']; ?></span>
+                                        </td>
 
                                     </tr>
                                     <?php } ?>

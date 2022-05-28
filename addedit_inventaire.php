@@ -1,4 +1,5 @@
 <?php include ("menu_footer/menu.php"); ?>
+
 <?php ini_set('memory_limit', '256M'); ?>
 <div class="wrapper">
 
@@ -227,11 +228,12 @@ if(isset($_POST['enregistrer_mail'])){
                                         </button>
                                         <input class="form-control" type="hidden" name="enregistrer_mail">
                                     </div>
-                                    <div id="progress" class="progress">
-                                        <div class="progress-bar"></div>
-                                    </div>
+
                                 </div>
                             </form>
+                        </div>
+                        <div id="progress" class="progress">
+                            <div class="progress-bar"></div>
                         </div>
                     </div>
                 </div>
@@ -240,22 +242,25 @@ if(isset($_POST['enregistrer_mail'])){
         </div>
     </div>
 
+
+    <?php include ("menu_footer/footer.php"); ?>
     <script>
     $(document).ready(function() {
-		 alert("hello world") ; 
+
+        alert("hello world");
+
         let progress = $('#progress');
         let bar = $(progress).find('.progress-bar');
         let form = $('#form');
         let success = $('#success');
         let error = $('#error');
-        console.log(form)
+        console.log(form);
+        $(progress).show();
         $(form).on('submit', function(e) {
             e.preventDefault();
             if ($(form).find('#file').val()) {
-                console.log($(form).find('#file').val());
                 var data = new FormData();
                 data.append('file', $('#file').get(0).files[0]);
-                $(progress).show();
                 var config = {
                     onUploadProgress: function(e) {
                         let percent Completed = Math.round((e.loaded 180) / e.total);
@@ -271,8 +276,8 @@ if(isset($_POST['enregistrer_mail'])){
                         }
                     }
                 }
+
             }
-        })
+        });
     });
     </script>
-    <?php include ("menu_footer/footer.php"); ?>
