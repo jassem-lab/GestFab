@@ -49,9 +49,14 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 		$seuil				=	$enreg["seuil"] ;
 		$emplacement		=	$enreg["emplacement"] ;
         
-      
+        $prov="";
+            $req1="select * from erp_fab_classe where id=".$enreg['provenance'];
+            $query1=mysql_query($req1);
+            while($enreg1=mysql_fetch_array($query1)){
+                $prov	=	$enreg1['classe'];
+			}
 
-
+		
 
 			$objPHPExcel->getActiveSheet()->SetCellValue('A'.$i, ($code));
 			$objPHPExcel->getActiveSheet()
@@ -68,7 +73,6 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
-			
 			$objPHPExcel->getActiveSheet()->SetCellValue('C'.$i, ($designation));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
@@ -76,7 +80,7 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
-			$objPHPExcel->getActiveSheet()->SetCellValue('D'.$i, ($px_achat));
+			$objPHPExcel->getActiveSheet()->SetCellValue('D'.$i, ($prov));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
 			->getNumberFormat()
@@ -90,19 +94,16 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
-            $prov="";
-            $req1="select * from erp_fab_classe where id=".$enreg['provenance'];
-            $query1=mysql_query($req1);
-            while($enreg1=mysql_fetch_array($query1)){
-                $prov	=	$enreg1['classe'];
           
-			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$i, ($enreg1['classe']));
+		
+			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$i, ($seuil));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
 			->getNumberFormat()
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
-			);	  }
+			);	
+          
 			$objPHPExcel->getActiveSheet()->SetCellValue('G'.$i, ($seuil));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
@@ -110,10 +111,12 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
-            $reqEmp = "select * from erp_fab_emplacements where id=".$emplacement ; 
-        $queryEmp = mysql_query($reqEmp) ; 
-         while($enregEmp = mysql_fetch_array($queryEmp)){
-         $emp = $ênregEmp["emplacement"] ; 
+			
+			$reqEmp = "select * from erp_fab_emplacements where id=".$emplacement ; 
+			$queryEmp = mysql_query($reqEmp) ; 
+			while($enregEmp = mysql_fetch_array($queryEmp)){
+			$emp = $ênregEmp["emplacement"] ; 
+			
 			$objPHPExcel->getActiveSheet()->SetCellValue('H'.$i, ($emp));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)

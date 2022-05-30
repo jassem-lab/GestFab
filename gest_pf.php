@@ -247,7 +247,7 @@ if(isset($_POST['prov'])){
                                             <a href="nomenclature_pf_sf.php"
                                                 class="btn btn-primary waves-effect waves-light"
                                                 style="background-color: blue">Mise à jours Nomenclature </a>
-                                            <a href="exportation/export_pf.php"
+                                            <a id="" href="exportation/export_pf.php"
                                                 class="btn btn-success waves-effect waves-light ">
                                                 Exporter Excel
                                             </a>
@@ -741,4 +741,9 @@ $(".btnmp_1").on("click", function() {
     }, 'json');
     $('.page-loader-wrapper').removeClass("show");
 });
+
+
+
+
+
 </script>
