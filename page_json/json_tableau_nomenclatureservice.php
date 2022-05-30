@@ -3,6 +3,7 @@
 	include('../connexion/cn.php');  
  
 	$idproduit			   	= $_POST['idproduit']; 
+	$idservice			   	= $_POST['idservice']; 
 	$iddet			  	 	= $_POST['iddet']; 
 	$qte_demande=0;
 	$reqdet="select * from erp_bc_det_bc where id=".$iddet;
@@ -17,10 +18,10 @@
 	<thead>
 		<tr>
 			<th><b>Produit SF</b></th>
-			<th><b>Services</b></th>
 			<th><b>QTE SF</b></th>
 			<th><b>QTE Demandée</b></th>
-			<th><b>Temps de cycle Nécessaire</b></th>
+			<th><b>Cycle Nécessaire (Seconde)</b></th>
+			<th><b>Cycle Nécessaire (Minute)</b></th>
 			<th><b>Poids NET Demandée</th>
 			<th><b>BRUTE</b></th>
 			<th><b style="color:red">FM</b></th>
@@ -30,7 +31,7 @@
 	</thead>
 	<tbody>	
 	<?php
-$reqnom="select * from erp_fab_nomenclature_pf where idproduit=".$idproduit;
+$reqnom="select * from erp_fab_nomenclature_pf where idproduit=".$idproduit." and exists(select * from erp_fab_produits_service where  erp_fab_produits_service.idproduit = erp_fab_nomenclature_pf.idsemi AND idservice =".$idservice.")";
 $querynom=mysql_query($reqnom);
 while($enregnom=mysql_fetch_array($querynom)){	
 
@@ -193,10 +194,10 @@ while($enregnom=mysql_fetch_array($querynom)){
 			
 		<tr>
 			<td><a href="affectation_service.php?IDP=<?php echo $enregnom["idsemi"]; ?>" target="_blank"><?php echo $sproduit; ?></a></td>
-			<td><?php echo $service; ?></td>
 			<td><?php echo $enregnom["quantite"]; ?></td>
 			<td><?php echo $qte_demande; ?></td>
-			<td><?php echo $temps_cycle.' Seconde'; ?></td>
+			<td><?php echo $temps_cycle.' Secondes'; ?></td>
+			<td><?php echo number_format(($temps_cycle/60),'3','.','').' Minutes'; ?></td>
 			<td><?php echo $poids_net; ?></td>
 			<td><b><?php echo $poids_brute; ?></b></td>
 			<td><b style="color:red"><?php echo $fm; ?></b></td>

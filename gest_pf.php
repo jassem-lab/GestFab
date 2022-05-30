@@ -163,6 +163,14 @@ if(isset($_POST['code'])){
 	}
 }
 
+$reqProven="";
+$prov="";
+if(isset($_POST['prov'])){
+	if(($_POST['prov'])<>""){
+		$prov			=	$_POST['prov'];
+		$reqProven		=	" and  provenance=".$prov;
+	}
+}
 ?>	        		
 			<div class="row">
 				<div class="col-lg-12">
@@ -185,6 +193,19 @@ if(isset($_POST['code'])){
 												<?php } ?>
 											</select>
 											</div>
+											<div class="col-xl-3">
+											<b>Liste des provenances</b>
+											<select class="form-control select2" name="prov">
+												<option value=""> Sélectionner une provenance </option>
+												<?php
+												$req="select * from erp_fab_classe order by classe";
+												$query=mysql_query($req);
+												while($enreg=mysql_fetch_array($query)){
+												?>
+												<option value="<?php echo $enreg['id']; ?>" <?php if($prov==$enreg['id']) {?> selected <?php } ?>><?php echo $enreg['classe']; ?></option>
+												<?php } ?>
+											</select>
+											</div>											
 											<div class="col-xl-2">
 												<form name="SubmitContact" class="" method="post" action="">
 																<b>Affichage par</b>
@@ -224,7 +245,7 @@ if(isset($_POST['code'])){
                                         </thead>
                                         <tbody>
 <?php
-	$req="select * from erp_fab_produits where semi=1 ".$reqCode." order by code";
+	$req="select * from erp_fab_produits where semi=1 ".$reqCode.$reqProven." order by code";
 	$query=mysql_query($req);
 	$total=mysql_num_rows($query);
 	
@@ -253,7 +274,7 @@ if(isset($_POST['code'])){
 	$prix				=	"0" ;
 	$type				=	"" ;	
 	$i					=	0;
-	$req="select * from erp_fab_produits where semi=1 ".$reqCode." order by code  LIMIT $start, $limit" ;
+	$req="select * from erp_fab_produits where semi=1 ".$reqCode.$reqProven." order by code  LIMIT $start, $limit" ;
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
@@ -274,6 +295,11 @@ if(isset($_POST['code'])){
 		$reqcom="select * from erp_fab_nomenclature_pf where idproduit=".$id." and idsemi>0";
 		$querycom=mysql_query($reqcom);
 		$nomenclature=mysql_num_rows($querycom);	
+	
+		$nm=0;
+		$reqcom="select * from erp_fab_nomenclature_emballage where idproduit=".$id;
+		$querycom=mysql_query($reqcom);
+		$nm=mysql_num_rows($querycom);			
 	
 	?>
 										<tr>
@@ -326,7 +352,55 @@ if(isset($_POST['code'])){
                                                         </div>
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->
-                                            </div><!-- /.modal -->												
+                                            </div><!-- /.modal -->	
+
+												<button type="button" class="btn_1 btn-primary waves-effect waves-light" data-toggle="modal" 
+														data-target=".bs-example-modal-lg1<?php echo $enreg['id']; ?>" id="<?php echo $enreg['id']; ?>">
+														Nomenclature Emballage (<?php echo $nm; ?>)
+												</button>												
+												<!--  Modal content for the above example -->
+												<div class="modal fade bs-example-modal-lg1<?php echo $enreg['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title mt-0" id="myLargeModalLabel"><?php echo $code; ?></h5>
+																<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+															</div>
+															<div class="modal-body">
+															   
+															   <div class="col-md-12 row">
+																	<div class="col-md-5">
+																		<b>Liste des MPs emballage</b>
+																		<select class="form-control select2" id="selectMP1<?php echo $enreg['id']; ?>">
+																			<option value="0">Sélectionner un MP</option>
+																			<?php
+																			$reqnom="select * from erp_fab_mp_emballage where not exists(
+																			select * from erp_fab_nomenclature_emballage where erp_fab_nomenclature_emballage.idmp=erp_fab_mp_emballage.id and idproduit=".$id.")";
+																			$querynom=mysql_query($reqnom);
+																			while($enregnom=mysql_fetch_array($querynom)){
+																			?>
+																				<option value="<?php echo $enregnom['id']; ?>">
+																					<?php echo $enregnom['code']; ?>
+																				</option>
+																			<?php } ?>
+																		</select>
+																	</div>
+																	<div class="col-md-3">
+																		<br>
+																		<input type="button" id="<?php echo $enreg['id']; ?>" value="Enregistrer" class="btn btn-primary btn-sm btnmp_1" >
+																	</div>															
+															   </div>
+															   
+															   <div class="col-md-12 row" style="margin-top:20px" id="listeMP1<?php echo $enreg['id']; ?>" >
+		
+															   </div>
+															   
+															   
+															</div>
+														</div><!-- /.modal-content -->
+													</div><!-- /.modal-dialog -->
+												</div><!-- /.modal -->								
+											
 										 </td>
 										</tr>
 	<?php } ?>
@@ -555,5 +629,69 @@ if(isset($_POST['code'])){
 		}, 'json');
 		$('.page-loader-wrapper').removeClass("show");
 	});		
+	
+	$(".btn_1").on("click", function(){
+		var idproduit	= $(this).attr('id');
+		if (window.XMLHttpRequest)
+		{
+		  xmlhttp_listemps=new XMLHttpRequest();
+		}else{
+		  xmlhttp_listemps=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp_listemps.onreadystatechange=function(){
+			
+			if(xmlhttp_listemps.status==200 && xmlhttp_listemps.readyState==4){
+				
+				$('#listeMP1'+idproduit).html(xmlhttp_listemps.responseText);
+			}	
+		}
+		xmlhttp_listemps.open("POST","page_json/json_liste_mpsemballagePF.php",true);
+		xmlhttp_listemps.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xmlhttp_listemps.send("idproduit="+idproduit);
+
+	});	
+	$(".btnmp_1").on("click", function(){
+		var idproduit	= $(this).attr('id');
+		var mp			= $("#selectMP1"+idproduit).val();
+		var qte			= 1;
+				
+		if(mp=="0"){
+			alert("Sélectionner une matière première SVP !");
+			return false;
+		}
+		
+		if(qte==""){
+			alert("Saisir la quantité SVP !");
+			return false;
+		}		
+		
+		var variable="idproduit="+idproduit+"&mp="+mp+"&qte="+qte;
+		$.post("page_ajax/ajax_nomenclature_mpemballagePF.php", variable, function (data, status) {
+			if (status == "success") {	
+					if (window.XMLHttpRequest)
+					{
+					  xmlhttp_selectmps101=new XMLHttpRequest();
+					}else{
+					  xmlhttp_selectmps101=new ActiveXObject("Microsoft.XMLHTTP");
+					}
+					xmlhttp_selectmps101.onreadystatechange=function(){
+						
+						if(xmlhttp_selectmps101.status==200 && xmlhttp_selectmps101.readyState==4){
+							
+							$('#listeMP1'+idproduit).html(xmlhttp_selectmps101.responseText);
+						}	
+					}
+					xmlhttp_selectmps101.open("POST","page_json/json_liste_mpsemballagePF.php",true);
+					xmlhttp_selectmps101.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp_selectmps101.send("idproduit="+idproduit);			
+
+					$('#qte'+idsf).val('');
+			}
+		}, 'json');
+		$('.page-loader-wrapper').removeClass("show");
+	});	
+	
+	
+	
 	
 </script>

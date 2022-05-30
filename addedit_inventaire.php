@@ -247,35 +247,41 @@ if(isset($_POST['enregistrer_mail'])){
     <script>
     $(document).ready(function() {
 
-        alert("hello world");
+
 
         let progress = $('#progress');
         let bar = $(progress).find('.progress-bar');
         let form = $('#form');
         let success = $('#success');
         let error = $('#error');
-        console.log(form);
+
         $(progress).show();
         $(form).on('submit', function(e) {
-            e.preventDefault();
+            
+            console.log($(form).find('#file').val());
+            alert("hello world");
             if ($(form).find('#file').val()) {
                 var data = new FormData();
-                data.append('file', $('#file').get(0).files[0]);
-                var config = {
-                    onUploadProgress: function(e) {
-                        let percent Completed = Math.round((e.loaded 180) / e.total);
-                        if (percent Completed < 100)(
-                            $(bar).text(percent Completed + '').width(percent Completed +
-                                '%');
-                        )
-                        else {
-                            $(bar).text('Done').width('100%');
-                            headers: {
-                                "X-Requested-With": "XMLHttpRequest"
-                            },
-                        }
-                    }
-                }
+				data.append('file', $('#file').get(0).files[0]);
+				console.log(data)
+            //     data.append('file', $('#file').get(0).files[0]);
+            //     var config = {
+            //         onUploadProgress: function(e) {	
+            //             let percent Completed = Math.round((e.loaded 180) / e.total);
+
+            //             if (percent Completed < 100)(
+            //                 $(bar).text(percent Completed + '').width(percent Completed +
+            //                     '%');
+            //             )
+            //             else {
+            // 				console.log('doesnt work')
+            // $(bar).text('Done').width('100%');
+            // headers: {
+            //     "X-Requested-With": "XMLHttpRequest"
+            // },
+            //             }
+            //         }
+            //     }
 
             }
         });

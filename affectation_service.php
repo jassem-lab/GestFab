@@ -126,7 +126,7 @@
 											if($service>0){
 												$req="select * from	erp_fab_service where id=".$service;
 											} else{
-												$req="select * from	erp_fab_service where not exists(select * from erp_fab_produits_service where erp_fab_produits_service.idservice=erp_fab_service.id and idproduit=".$_GET['IDP'].")";
+												$req="select * from	erp_fab_service where id<4 and not exists(select * from erp_fab_produits_service where erp_fab_produits_service.idservice=erp_fab_service.id and idproduit=".$_GET['IDP'].")";
 											}
 											$query=mysql_query($req);
 											while($enreg=mysql_fetch_array($query)){
@@ -464,38 +464,38 @@
 			if (status == "success") {	
 					if (window.XMLHttpRequest)
 					{
-					  xmlhttp_selectmps1=new XMLHttpRequest();
+					  xmlhttp_selectmps101=new XMLHttpRequest();
 					}else{
-					  xmlhttp_selectmps1=new ActiveXObject("Microsoft.XMLHTTP");
+					  xmlhttp_selectmps101=new ActiveXObject("Microsoft.XMLHTTP");
 					}
-					xmlhttp_selectmps1.onreadystatechange=function(){
+					xmlhttp_selectmps101.onreadystatechange=function(){
 						
-						if(xmlhttp_selectmps1.status==200 && xmlhttp_selectmps1.readyState==4){
+						if(xmlhttp_selectmps101.status==200 && xmlhttp_selectmps101.readyState==4){
 							
-							$('#listeMP'+idservice).html(xmlhttp_selectmps1.responseText);
+							$('#listeMP'+idservice).html(xmlhttp_selectmps101.responseText);
 						}	
 					}
-					xmlhttp_selectmps1.open("POST","page_json/json_liste_mps.php",true);
-					xmlhttp_selectmps1.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-					xmlhttp_selectmps1.send("idproduit="+idproduit+"&idservice="+idservice);	
+					xmlhttp_selectmps101.open("POST","page_json/json_liste_mps.php",true);
+					xmlhttp_selectmps101.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp_selectmps101.send("idproduit="+idproduit+"&idservice="+idservice);	
 					
 					//Refraiche la liste des MPs
 						if (window.XMLHttpRequest)
 						{
-						  xmlhttp_selectmps1=new XMLHttpRequest();
+						  xmlhttp_selectmps100=new XMLHttpRequest();
 						}else{
-						  xmlhttp_selectmps1=new ActiveXObject("Microsoft.XMLHTTP");
+						  xmlhttp_selectmps100=new ActiveXObject("Microsoft.XMLHTTP");
 						}
-						xmlhttp_selectmps1.onreadystatechange=function(){
+						xmlhttp_selectmps100.onreadystatechange=function(){
 							
-							if(xmlhttp_selectmps1.status==200 && xmlhttp_selectmps1.readyState==4){
+							if(xmlhttp_selectmps100.status==200 && xmlhttp_selectmps100.readyState==4){
 								
-								$('#selectMP'+idservice).html(xmlhttp_selectmps1.responseText);
+								$('#selectMP'+idservice).html(xmlhttp_selectmps100.responseText);
 							}	
 						}
-						xmlhttp_selectmps1.open("POST","page_json/json_selectmp.php",true);
-						xmlhttp_selectmps1.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-						xmlhttp_selectmps1.send("idproduit="+idproduit+"&idservice="+idservice);	
+						xmlhttp_selectmps100.open("POST","page_json/json_selectmp.php",true);
+						xmlhttp_selectmps100.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+						xmlhttp_selectmps100.send("idproduit="+idproduit+"&idservice="+idservice);	
 					//Fin refraiche liste des MPs					
 
 					$('#qte'+idservice).val('');

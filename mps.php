@@ -50,20 +50,16 @@ if(isset($_POST['enregistrer_mail'])){
 	$designation		=	addslashes($_POST["designation"]) ;
 	$px_achat			=	addslashes($_POST["px_achat"]) ;
 	$seuil				=	addslashes($_POST["seuil"]) ;
-	if ($_POST["group2"] == '1')
-	{
-		$consommable				=	'1';	
-	}else{
-		$consommable				=	'0';	
-	}		
+	$emplacement		=	addslashes($_POST["emplacement"]) ;
+	$consommable		=	'0';	
 	if($id=="0")
 		{			
-			 $sql="INSERT INTO `erp_fab_mp`(`code`, `designation`, `code_barre`, `provenance`, `unite`, `px_achat`, `seuil`, `consommable`)  VALUES
-			 ('".$code."','".$designation."' ,'".$code_barre."' ,'".$provenance."' ,'".$unite."' ,'".$px_achat."' ,'".$seuil."','".$consommable."' )";
+			 $sql="INSERT INTO `erp_fab_mp`(`code`, `designation`, `code_barre`, `provenance`, `unite`, `px_achat`, `seuil`, `consommable`, emplacement)  VALUES
+			 ('".$code."','".$designation."' ,'".$code_barre."' ,'".$provenance."' ,'".$unite."' ,'".$px_achat."' ,'".$seuil."','".$emplacement."','".$consommable."' )";
 		}
 	else{
 			$sql="UPDATE `erp_fab_mp` SET `code`='".$code."',`code_barre`='".$code_barre."',
-			`designation`='".$designation."', `unite`='".$unite."', `provenance`='".$provenance."' , `px_achat`='".$px_achat."', `seuil`='".$seuil."', `consommable`='".$consommable."'  WHERE id=".$id;
+			`designation`='".$designation."', `unite`='".$unite."', `provenance`='".$provenance."' , `px_achat`='".$px_achat."', `seuil`='".$seuil."', `consommable`='".$consommable."',emplacement='".$emplacement."'  WHERE id=".$id;
 			
 		}
 		$requete=mysql_query($sql);
@@ -79,6 +75,7 @@ if(isset($_POST['enregistrer_mail'])){
 	$provenance			=	"" ;
 	$seuil				=	"0" ;
 	$consommable		=	"0";
+	$emplacement		=	0;
 	$req="select * from erp_fab_mp where id=".$id;
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
@@ -91,6 +88,7 @@ if(isset($_POST['enregistrer_mail'])){
 		$provenance			=	$enreg["provenance"] ;
 		$seuil				=	$enreg["seuil"] ;
 		$consommable		=	$enreg["consommable"] ;
+		$emplacement		=	$enreg["emplacement"] ;
 	}
 	
 	?>
@@ -158,24 +156,31 @@ if(isset($_POST['enregistrer_mail'])){
                                             <?php } ?>
                                         </select>
                                     </div>
-                                    <div class="col-sm-3">
-                                        <b>Seuil d’approvisionnement </b>
+                                    <div class="col-sm-2">
+                                        <b>Seuil </b>
                                         <input class="form-control" type="number"
-                                            placeholder="	Seuil d’approvisionnement " value="<?php echo $seuil; ?>"
+                                            placeholder="Seuil d’approvisionnement " value="<?php echo $seuil; ?>"
                                             id="example-text-input" name="seuil">
                                     </div>
-                                    <div class="col-sm-2">
-
-                                        <b>MP Consommable</b>
-                                        <br>
-                                        <input name="group2" type="radio" id="radio_4" class="radio-col-grey" value="1"
-                                            <?php if ($consommable=="1") { ?> checked <?php }?> />
-                                        <label for="radio_4">Oui</label>
-                                        <input name="group2" type="radio" id="radio_5" value="0" class="radio-col-blue"
-                                            <?php if ($consommable=="0") { ?> checked <?php }?> />
-                                        <label for="radio_5">Non</label>
-                                    </div>
+                                    <div class="col-sm-3" style="">
+                                        <b>Liste des emplacements </b>
+                                        <select name="type" name="emplacement" id="emplacement" class="form-control">
+                                            
+                                            <option value="">Sélectionner un emplacement</option>
+                                            <?php 
+												$re="select * from erp_fab_emplacements";
+												$qu=mysql_query($re);
+												while($enreg=mysql_fetch_array($qu)){
+											?>
+                                            <option value="<?php echo $enreg['id']; ?>"
+                                                <?php if($enreg['id']==$emplacement){ ?> selected <?php } ?>>
+                                                <?php echo $enreg['emplacement']; ?>
+                                            </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>									
                                 </div>
+								
 
                                 <div class="form-group m-b-0">
                                     <div>
@@ -266,7 +271,7 @@ if(isset($_POST['code'])){
                                         <th><b>Unité</b></th>
                                         <th><b>Prix d'achat</b></th>
                                         <th><b>Seuil d’approvisionnement </b></th>
-                                        <th><b>MP Consommable </b></th>
+										<th><b>Emplacement </b></th>
                                         <th><b>Action</b></th>
                                     </tr>
                                 </thead>
@@ -319,6 +324,13 @@ if(isset($_POST['code'])){
 			$provenance	=	$enreg1['classe'];
 		}
 		
+		$emplacement		=	"" ;
+		$req1="select * from erp_fab_emplacements where id=".$enreg['emplacement'];
+		$query1=mysql_query($req1);
+		while($enreg1=mysql_fetch_array($query1)){
+			$emplacement	=	$enreg1['emplacement'];
+		}
+		
 		if($enreg['consommable']==1){
 			$consommable 	=	'Oui';
 		} else{
@@ -334,7 +346,7 @@ if(isset($_POST['code'])){
                                         <td><?php echo $unite; ?></td>
                                         <td><?php echo $prix; ?></td>
                                         <td><?php echo $enreg['seuil']; ?></td>
-                                        <td><?php echo $consommable; ?></td>
+										 <td><?php echo $emplacement; ?></td>
                                         <td>
                                             <a href="mps.php?ID=<?php echo $id; ?>"
                                                 class="btn btn-warning waves-effect waves-light">Modifier</a>

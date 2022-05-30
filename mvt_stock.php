@@ -96,18 +96,15 @@ if(isset($_POST['dat1'])){
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
                                         <th><b>Code</b></th>
                                         <th><b>Designation</b></th>
-                                        
                                         <th><b>Type de mouvement</b></th>
                                         <th><b>Date de mouvement</b></th>
                                         <th><b>Reference de mouvement</b></th>
@@ -118,49 +115,49 @@ if(isset($_POST['dat1'])){
                                 <tbody>
                                     <?php
 
-	$date				=	"";
-	$reference			=	"";
-	$id					=	0;
-	$montant			=	"0";
-	
-	 $req="select * from jointure_mouvements_articles where 1=1 ".$reqCode.$reqDate.$reqDate1." order by dateh asc "; 
-	$query=mysql_query($req);
-	while($enreg=mysql_fetch_array($query))
-	{
-		$id					=	$enreg["ID"] ;	
-        $Reference		    =	$enreg["REF"] ;	
-		$mp		        	=	$enreg["mp"] ;
-		$type		    	=	$enreg["TYPE"] ;
-		$quantite			=	$enreg["quantite"] ;
-		$date				=	date("d/m/Y", strtotime($enreg["DATE"]) );
-		$dateh				=	date("d/m/Y", strtotime($enreg["DATEH"]) );
-        
-
-        $reqMP = "select * from erp_fab_mp where id=".$mp; 
-        $queryMP = mysql_query($reqMP) ; 
-        while($enregMP = mysql_fetch_array($queryMP)){
-            $code = $enregMP["code"] ;  
-            $designation = $enregMP["designation"] ;  
-            $stockActuel = $enregMP["stock"] ;  
-        }
-if($type == 'INV'){
-    $type = 'Inventaire' ; 
-}if($type == 'BE'){
-    $type = "Bon d'entré" ; 
-}if($type == 'BS'){
-    $type = 'Bon de sortie' ; 
-}
-		
-?>
+                                    $date				=	"";
+                                    $reference			=	"";
+                                    $id					=	0;
+                                    $montant			=	"0";
+                                    
+                                    $req="select * from jointure_mouvements_articles where 1=1 ".$reqCode.$reqDate.$reqDate1." order by dateh asc "; 
+                                    $query=mysql_query($req);
+                                    while($enreg=mysql_fetch_array($query))
+                                    {
+                                        $id					=	$enreg["ID"] ;	
+                                        $Reference		    =	$enreg["REF"] ;	
+                                        $mp		        	=	$enreg["mp"] ;
+                                        $type		    	=	$enreg["TYPE"] ;
+                                        $quantite			=	$enreg["quantite"] ;
+                                        $date				=	date("d/m/Y", strtotime($enreg["DATE"]) );
+                                        $dateh				=	date("d/m/Y", strtotime($enreg["DATEH"]) );
+                                        
+                                        $reqMP = "select * from erp_fab_mp where id=".$mp; 
+                                        $queryMP = mysql_query($reqMP) ; 
+                                        while($enregMP = mysql_fetch_array($queryMP)){
+                                            $code = $enregMP["code"] ;  
+                                            $designation = $enregMP["designation"] ;  
+                                            $stockActuel = $enregMP["stock"] ;  
+                                        }
+                                if($type == 'INV'){
+                                    $type = 'Inventaire' ; 
+                                }if($type == 'BE'){
+                                    $type = "Bon d'entré" ; 
+                                }if($type == 'BS'){
+                                    $type = 'Bon de sortie' ; 
+                                }
+                                        
+                                ?>
                                     <tr>
                                         <td><?php echo $code; ?></td>
                                         <td><?php echo $designation; ?></td>
-                                        
+
                                         <td><?php echo $type; ?></td>
                                         <td><?php echo $date; ?></td>
                                         <td><?php echo $Reference; ?></td>
                                         <td><?php echo $quantite; ?></td>
-                                        <td><b class="badge rounded-pill text-bg-danger"><?php echo $stockActuel; ?></b></td>
+                                        <td><b class="badge rounded-pill text-bg-danger"><?php echo $stockActuel; ?></b>
+                                        </td>
 
 
                                     </tr>

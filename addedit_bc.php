@@ -50,7 +50,7 @@
 				$max = '001';			
 			}
 			
-			$reference= "BCF_".$date."_".$max;		
+			$reference= "BC_".$date."_".$max;		
 	}
 
 	if(isset($_GET['IDD'])){
