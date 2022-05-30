@@ -13,6 +13,7 @@ $objPHPExcel->getProperties()->setDescription("Test document for Office 2007 XLS
 
 
 $objPHPExcel->setActiveSheetIndex(0);
+
 $Date =  date('d-m-y') ;
 
 
@@ -26,6 +27,7 @@ $objPHPExcel->getActiveSheet()->SetCellValue('C4', ("Code à barre"));
 $objPHPExcel->getActiveSheet()->SetCellValue('D4', ("Prix de vente"));
 $objPHPExcel->getActiveSheet()->SetCellValue('E4', ("Provenance"));
 $objPHPExcel->getActiveSheet()->SetCellValue('F4', ("Seuil d'approvisionnement"));
+$objPHPExcel->getActiveSheet()->SetCellValue('H4', ("Type d'emballage"));
 
 
 $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -36,13 +38,13 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
 $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 
 
-	$i = 4;
+	$i = 5;
 
 	session_start();
 	include('../connexion/cn.php');
 
 	$article="";
-	$req="select * from erp_fab_produits where semi=0  order by code  ";
+	$req="select * from erp_fab_produits where semi=1  order by code  ";
 	$query=mysql_query($req);
 	while($enreg=mysql_fetch_array($query))
 	{
@@ -51,10 +53,14 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 		$code_barre			=	$enreg["code_barre"] ;
 		$designation		=	$enreg["designation"] ;		
 		$prix				=	$enreg["prix"] ;
-		$type				=	$enreg["type"] ;
+	
         $seuil              =   $enreg["seuil"] ; 
       
-	
+        if($enreg["type"==0]){
+			$type				=	'Emballage par pièce';
+		} else{
+			$type				=	'Emballage par séparation';
+		}
 
 
 			$objPHPExcel->getActiveSheet()->SetCellValue('A'.$i, ($code));
@@ -108,6 +114,13 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
+			$objPHPExcel->getActiveSheet()->SetCellValue('H'.$i, ($type));
+			$objPHPExcel->getActiveSheet()
+			->getStyle('A'.$i)
+			->getNumberFormat()
+			->setFormatCode(
+				PHPExcel_Style_NumberFormat::FORMAT_TEXT
+			);	
            
 
 		$i ++;
@@ -115,11 +128,11 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 	
 
 	
-$objPHPExcel->getActiveSheet()->setTitle('Liste des produits SF');
+$objPHPExcel->getActiveSheet()->setTitle('Liste des produits PF');
 
 
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="Liste_SF.xls"');
+header('Content-Disposition: attachment;filename="Liste_PF.xls"');
 header('Cache-Control: max-age=0');
 
 // Do your stuff here
