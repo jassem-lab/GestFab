@@ -1,12 +1,12 @@
 <?php include ("menu_footer/menu.php"); ?>
 <div class="wrapper">
 
-  <div class="page-title-box">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-12">
-				<h4 class="page-title">Nomenclature Service et produits Semi Finis</h4>
-<?php 
+    <div class="page-title-box">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4 class="page-title">Nomenclature Service et produits Semi Finis</h4>
+                    <?php 
 	$id = $_GET['ID'];
 	$req="select * from erp_fab_service where id=".$id; 
 	$query=mysql_query($req);
@@ -15,16 +15,16 @@
 		$service			=	$enreg["service"] ;
 	}
 
-?>				
-				<h4>Service : <?php echo $service; ?></h4>
-				
-				<br> Utilisateur : <?php echo $_SESSION['erp_fab_USER']; ?>
-			</div>
-		</div>
-	</div>
-  </div>
-  
- <?php
+?>
+                    <h4>Service : <?php echo $service; ?></h4>
+
+                    <br> Utilisateur : <?php echo $_SESSION['erp_fab_USER']; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php
 
 	if(isset($_GET['ID'])){
 		$id = $_GET['ID'];
@@ -634,46 +634,51 @@ if(isset($_POST['enregistrer_mail'])){
 		}
 	}	
 	
-	
 
 	echo '<SCRIPT LANGUAGE="JavaScript">document.location.href="nomenclature_service.php?ID='.$id.'&suc=1" </SCRIPT>';
 }
+	?>
+    <div class="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <a href="nomenclature_sf_service.php"
+                                class="btn btn-primary waves-effect waves-light">Retour</a>
+                            <a href="modele_nomenclature.php" class="btn btn-primary waves-effect waves-light"
+                                style="background-color: orange">Modèle Viérge </a>
+                            <?php if(isset($_GET['suc'])){ ?>
+                            <?php if($_GET['suc']=='1'){ ?>
+                            <font color="green" style="background-color:#FFFFFF;">
+                                <center>Enregistrement effectué avec succès</center>
+                            </font><br /><br />
+                            <?php } ?>
+                            <?php }?>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="" class="control-label">Fichier (.xls) :<span
+                                            class='require'>*</span></label>
+                                    <input type="file" class="form-control input-lg" name="fileAimporter"
+                                        style="height:60px;" required>
+                                </div>
 
-	?> 
-  <div class="page-content-wrapper">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="card m-b-20">
-						<div class="card-body">
-						<a href="nomenclature_sf_service.php" class="btn btn-primary waves-effect waves-light">Retour</a> 	
-						<a href="modele_nomenclature.php" class="btn btn-primary waves-effect waves-light" style="background-color: orange">Modèle Viérge </a> 
-							<?php if(isset($_GET['suc'])){ ?>
-								<?php if($_GET['suc']=='1'){ ?>
-								<font color="green" style="background-color:#FFFFFF;"><center>Enregistrement effectué avec succès</center></font><br /><br />
-								<?php } ?>
-							<?php }?>								  
-								<form action="" method="POST"  enctype="multipart/form-data">  
-									<div class="form-group">
-										<label for="" class="control-label">Fichier (.xls) :<span class='require'>*</span></label>
-										<input type="file" class="form-control input-lg" name="fileAimporter" style="height:60px;" required>
-									</div>
-									
-									<div class="form-group row">
-										<div class="col-sm-2">	
-											<br>
-											<button type="submit" class="btn btn-primary waves-effect waves-light">
-												Mise à jours nomenclature
-											</button>
-											<input class="form-control" type="hidden" name="enregistrer_mail">										
-										</div>		
-									</div>
-								</form>									
-					</div>
-				 </div> 
-			</div> 
-		 </div> 
-<?php
+                                <div class="form-group row">
+                                    <div class="col-sm-2">
+                                        <br>
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                            Mise à jours nomenclature
+                                        </button>
+                                        <input class="form-control" type="hidden" name="enregistrer_mail">
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
 $reqCode="";
 $code="";
 if(isset($_POST['code'])){
@@ -683,69 +688,86 @@ if(isset($_POST['code'])){
 	}
 }
 
-?>		 
+?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card m-b-20">
                         <div class="card-body">
                             <h3>Nomenclature</h3>
-								<form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
-									<div class="col-xl-12">
-										<div class="row">
-											<div class="col-xl-3">
-											<b>Liste des codes</b>
-											<select class="form-control select2" name="code">
-												<option value=""> Sélectionner un code produit</option>
-												<?php
+                            <form name="SubmitContact" class="" method="post" action="" onSubmit="" style=''>
+                                <div class="col-xl-12">
+                                    <div class="row">
+                                        <div class="col-xl-3">
+                                            <b>Liste des codes</b>
+                                            <select class="form-control select2" name="code">
+                                                <option value=""> Sélectionner un code produit</option>
+                                                <?php
 												$req="select * from erp_fab_produits where semi=0 order by code";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
-												<option value="<?php echo $enreg['id']; ?>" <?php if($code==$enreg['id']) {?> selected <?php } ?>><?php echo $enreg['code']; ?></option>
-												<?php } ?>
-											</select>
-											</div>
-											<div class="col-xl-2">
-												<form name="SubmitContact" class="" method="post" action="">
-																<b>Affichage par</b>
-																<select class="form-control select2" name="limit-records" id="limit-records">
-																	<option value="20" <?php if (isset($_POST['limit-records'])){ if($_POST['limit-records']==20){ ?> selected <?php }} ?>>20 produits</option>	
-																	<option value="50" <?php if (isset($_POST['limit-records'])){ if($_POST['limit-records']==50){ ?> selected <?php }} ?>>50 produits</option>	
-																	<option value="100" <?php if (isset($_POST['limit-records'])){ if($_POST['limit-records']==100){ ?> selected <?php }} ?>>100 produits</option>
-																</select>	
-												</form>	
-											</div>	
-											<div class="col-xl-4">
-											  <b></b><br>
-												<input name="SubmitContact" type="submit" id="submit" class="btn btn-primary btn-sm " value="Filtrer">
-														
-											</div>											
-											<div class="col-xl-8">
-											  <b></b><br>
-												<a href="modele_nomenclature_pf.php" class="btn btn-primary waves-effect waves-light" style="background-color: orange">Modèle Nomenclature Viérge </a> 		
-												<a href="nomenclature_pf_sf.php" class="btn btn-primary waves-effect waves-light" style="background-color: blue">Mise à jours Nomenclature  </a> 		
-											</div>
-																					
-										</div>	
-									</div>
-								</form>							
+                                                <option value="<?php echo $enreg['id']; ?>"
+                                                    <?php if($code==$enreg['id']) {?> selected <?php } ?>>
+                                                    <?php echo $enreg['code']; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-xl-2">
+                                            <form name="SubmitContact" class="" method="post" action="">
+                                                <b>Affichage par</b>
+                                                <select class="form-control select2" name="limit-records"
+                                                    id="limit-records">
+                                                    <option value="20"
+                                                        <?php if (isset($_POST['limit-records'])){ if($_POST['limit-records']==20){ ?>
+                                                        selected <?php }} ?>>20 produits</option>
+                                                    <option value="50"
+                                                        <?php if (isset($_POST['limit-records'])){ if($_POST['limit-records']==50){ ?>
+                                                        selected <?php }} ?>>50 produits</option>
+                                                    <option value="100"
+                                                        <?php if (isset($_POST['limit-records'])){ if($_POST['limit-records']==100){ ?>
+                                                        selected <?php }} ?>>100 produits</option>
+                                                </select>
+                                            </form>
+                                        </div>
+                                        <div class="col-xl-4">
+                                            <b></b><br>
+                                            <input name="SubmitContact" type="submit" id="submit"
+                                                class="btn btn-primary btn-sm " value="Filtrer">
+
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <b></b><br>
+                                            <a href="modele_nomenclature_pf.php"
+                                                class="btn btn-primary waves-effect waves-light"
+                                                style="background-color: orange">Modèle Nomenclature Viérge </a>
+                                            <a href="nomenclature_pf_sf.php"
+                                                class="btn btn-primary waves-effect waves-light"
+                                                style="background-color: blue">Mise à jours Nomenclature </a>
+                                            <a href="exportation/export_nomenclature_service.php?ID=<?php echo $_GET['ID'] ?>"
+                                                class="btn btn-success waves-effect waves-light ">
+                                                Exporter Excel
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th><b>Services</b></th>
-										<th><b>Comp</b></th>
-										<th><b>Color</b></th>
-										<th><b>Cliche</b></th>
-										<th><b>Box Qty</b></th>
-										<th><b>Jig</b></th>
-										<th><b>Mold</b></th>
-										<th><b>Net Weight</b></th>
-										<th><b>Gross Weight</b></th>
-										<th><b>Cavity</b></th>
+                                        <th><b>Produit</b></th>
+                                        <th><b>Comp</b></th>
+                                        <th><b>Color</b></th>
+                                        <th><b>Cliche</b></th>
+                                        <th><b>Box Qty</b></th>
+                                        <th><b>Jig</b></th>
+                                        <th><b>Mold</b></th>
+                                        <th><b>Net Weight</b></th>
+                                        <th><b>Gross Weight</b></th>
+                                        <th><b>Cavity</b></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-    <?php
+                                    <?php
 	$req="select * from erp_fab_produits_service where idservice=".$_GET['ID'].$reqCode;
 	$query=mysql_query($req);
 	$total=mysql_num_rows($query);
@@ -834,36 +856,42 @@ if(isset($_POST['code'])){
 	?>
                                     <tr>
                                         <td><?php echo $sproduit; ?></td>
-										<td><?php echo $temps_execution; ?></td>
-										<td><?php echo $couleur; ?></td>
-										<td><?php echo $cliche; ?></td>
-										<td><?php echo $box_qty; ?></td>
-										<td><?php echo $jig; ?></td>
-										<td><?php echo $moule; ?></td>
-										<td><?php echo $poids_net; ?></td>
-										<td><?php echo $poids_brute; ?></td>
+                                        <td><?php echo $temps_execution; ?></td>
+                                        <td><?php echo $couleur; ?></td>
+                                        <td><?php echo $cliche; ?></td>
+                                        <td><?php echo $box_qty; ?></td>
+                                        <td><?php echo $jig; ?></td>
+                                        <td><?php echo $moule; ?></td>
+                                        <td><?php echo $poids_net; ?></td>
+                                        <td><?php echo $poids_brute; ?></td>
                                         <td><?php echo $cavity; ?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
                         </div>
-									<nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" href="nomenclature_service.php?ID=<?php echo $_GET['ID'];?>&page=<?php echo $Previous; ?>&limit=<?php echo $limit;?>">Précédente</a></li>
-											<?php 
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link"
+                                        href="nomenclature_service.php?ID=<?php echo $_GET['ID'];?>&page=<?php echo $Previous; ?>&limit=<?php echo $limit;?>">Précédente</a>
+                                </li>
+                                <?php 
 												for($i=1;$i<=$page;$i++){
 											?>
-                                            <li class="page-item"><a class="page-link" href="nomenclature_service.php?ID=<?php echo $_GET['ID'];?>&page=<?php echo $i; ?>&limit=<?php echo $limit;?>"><?php echo $i; ?></a></li>
-												<?php } ?>
-                                            <li class="page-item"><a class="page-link" href="nomenclature_service.php?ID=<?php echo $_GET['ID'];?>&page=<?php echo $Next; ?>&limit=<?php echo $limit;?>">Suivant</a></li>
-                                        </ul>
-                                    </nav>							
+                                <li class="page-item"><a class="page-link"
+                                        href="nomenclature_service.php?ID=<?php echo $_GET['ID'];?>&page=<?php echo $i; ?>&limit=<?php echo $limit;?>"><?php echo $i; ?></a>
+                                </li>
+                                <?php } ?>
+                                <li class="page-item"><a class="page-link"
+                                        href="nomenclature_service.php?ID=<?php echo $_GET['ID'];?>&page=<?php echo $Next; ?>&limit=<?php echo $limit;?>">Suivant</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
 
                 </div>
-            </div>				 
-  </div>
- </div>
+            </div>
+        </div>
+    </div>
 
-<?php include ("menu_footer/footer.php"); ?>
+    <?php include ("menu_footer/footer.php"); ?>

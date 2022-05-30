@@ -289,7 +289,7 @@ if(in_array($extension, $allowed_extension))
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th><b>Services</b></th>
+                                        <th><b>Produit</b></th>
 										<th><b>Comp</b></th>
 										<th><b>Color</b></th>
 										<th><b>Cliche</b></th>

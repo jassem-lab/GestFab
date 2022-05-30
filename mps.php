@@ -165,7 +165,7 @@ if(isset($_POST['enregistrer_mail'])){
                                     <div class="col-sm-3" style="">
                                         <b>Liste des emplacements </b>
                                         <select name="type" name="emplacement" id="emplacement" class="form-control">
-                                            
+
                                             <option value="">Sélectionner un emplacement</option>
                                             <?php 
 												$re="select * from erp_fab_emplacements";
@@ -178,9 +178,9 @@ if(isset($_POST['enregistrer_mail'])){
                                             </option>
                                             <?php } ?>
                                         </select>
-                                    </div>									
+                                    </div>
                                 </div>
-								
+
 
                                 <div class="form-group m-b-0">
                                     <div>
@@ -254,6 +254,9 @@ if(isset($_POST['code'])){
                                             <b></b><br>
                                             <input name="SubmitContact" type="submit" id="submit"
                                                 class="btn btn-primary btn-sm " value="Filtrer">
+                                                <a href="exportation/export_mp.php" class="btn btn-success waves-effect waves-light">
+													Exporter Excel
+												</a>
                                         </div>
 
                                     </div>
@@ -271,7 +274,7 @@ if(isset($_POST['code'])){
                                         <th><b>Unité</b></th>
                                         <th><b>Prix d'achat</b></th>
                                         <th><b>Seuil d’approvisionnement </b></th>
-										<th><b>Emplacement </b></th>
+                                        <th><b>Emplacement </b></th>
                                         <th><b>Action</b></th>
                                     </tr>
                                 </thead>
@@ -346,7 +349,7 @@ if(isset($_POST['code'])){
                                         <td><?php echo $unite; ?></td>
                                         <td><?php echo $prix; ?></td>
                                         <td><?php echo $enreg['seuil']; ?></td>
-										 <td><?php echo $emplacement; ?></td>
+                                        <td><?php echo $emplacement; ?></td>
                                         <td>
                                             <a href="mps.php?ID=<?php echo $id; ?>"
                                                 class="btn btn-warning waves-effect waves-light">Modifier</a>

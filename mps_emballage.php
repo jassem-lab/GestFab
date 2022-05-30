@@ -87,19 +87,25 @@ if(isset($_POST['enregistrer_mail'])){
                                     <div class="col-sm-3">
                                         <b>Désignation(*)</b>
                                         <input class="form-control" type="text" placeholder="Désignation  "
-                                            value="<?php echo $designation; ?>" id="example-text-input" name="designation" required>
+                                            value="<?php echo $designation; ?>" id="example-text-input"
+                                            name="designation" required>
                                     </div>
                                     <div class="col-sm-3">
                                         <b>Quantité nécessaire(*)</b>
                                         <input class="form-control" type="number" placeholder="Quantité"
-                                            value="<?php echo $quantite; ?>" id="example-text-input" name="quantite" required>
-                                    </div>									
+                                            value="<?php echo $quantite; ?>" id="example-text-input" name="quantite"
+                                            required>
+                                    </div>
                                     <div class="col-sm-3"><br>
                                         <button type="submit" class="btn btn-primary waves-effect waves-light">
                                             Enregistrer
                                         </button>
                                         <input class="form-control" type="hidden" name="enregistrer_mail">
                                     </div>
+                                    <a href="exportation/export_mp_emballage.php"
+                                        class="btn btn-success waves-effect waves-light m-5">
+                                        Exporter Excel
+                                    </a>
                                 </div>
 
                             </form>
@@ -113,15 +119,15 @@ if(isset($_POST['enregistrer_mail'])){
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card m-b-20">
-                        <div class="card-body">                           
+                        <div class="card-body">
                             <br>
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
                                         <th><b>#</b></th>
                                         <th><b>Code</b></th>
-										<th><b>Désignation</b></th>
-										<th><b>Quantité nécessaire</b></th>
+                                        <th><b>Désignation</b></th>
+                                        <th><b>Quantité nécessaire</b></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,8 +152,8 @@ if(isset($_POST['enregistrer_mail'])){
                                     <tr>
                                         <td><?php echo $i; ?></td>
                                         <td><?php echo $code; ?></td>
-										 <td><?php echo $des; ?></td>
-										<td><?php echo $qte; ?></td>
+                                        <td><?php echo $des; ?></td>
+                                        <td><?php echo $qte; ?></td>
                                         <?php if($_SESSION['erp_bc_PROFIL']==1){ ?>
                                         <td>
                                             <a href="mps_emballage.php?ID=<?php echo $id; ?>"

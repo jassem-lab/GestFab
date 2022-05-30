@@ -46,7 +46,7 @@ if(isset($_POST['code'])){
                                             <select class="form-control select2" name="code">
                                                 <option value=""> Sélectionner un code </option>
                                                 <?php
-												$req="select * from erp_fab_mp order by code";
+												$req="select * from erp_fab_produits where semi = 0 order by code";
 												$query=mysql_query($req);
 												while($enreg=mysql_fetch_array($query)){
 												?>
