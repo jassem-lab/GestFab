@@ -180,36 +180,78 @@ if(isset($_POST['enregistrer_mail'])){
                                         </select>
                                     </div>
                                 </div>
-
-
                                 <div class="form-group m-b-0">
                                     <div>
                                         <button type="submit" class="btn btn-primary waves-effect waves-light">
                                             Enregistrer
                                         </button>
                                         <input class="form-control" type="hidden" name="enregistrer_mail">
-
                                     </div>
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
 
 
             <?php
-$reqCode="";
-$code="";
-if(isset($_POST['code'])){
-	if(($_POST['code'])<>""){
-		$code			=	$_POST['code'];
-		$reqCode		=	" and  id=".$code;
-	}
-}
 
-?>
+        if(isset($_POST['import_mail'])){	
+
+        $file = $_FILES["FileAImporter"]["tmp_name"]; // getting temporary source of excel file
+        include("Classes/PHPExcel/IOFactory.php"); // Add PHPExcel Library in this code
+        $objPHPExcel = PHPExcel_IOFactory::load($file); // create object of PHPExcel library by using load() method and in load method define path of selected file
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet)
+                
+            {
+
+
+            $highestRow = $worksheet->getHighestRow();	
+            for($row=2; $row<=$highestRow; $row++)
+            {
+                $code           = mysql_real_escape_string($worksheet->getCellByColumnAndRow(0, $row)->getValue());
+                $des 	        = mysql_real_escape_string($worksheet->getCellByColumnAndRow(1, $row)->getValue());
+                $code_barre 	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(2, $row)->getValue());
+                $provenance 	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(3, $row)->getValue());
+                $unite       	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(4, $row)->getValue());
+                $prix          	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(5, $row)->getValue());
+                $seuil      	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(6, $row)->getValue());
+                $stock      	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(7, $row)->getValue());
+                $emplacement 	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(8, $row)->getValue());
+              
+
+                $req1="select * from erp_fab_mp where code='".$code."'";    
+                $query1 = mysql_query($req1) ; 
+                if(mysql_num_rows($query1)<1){
+                    
+                    $sql="INSERT INTO `erp_fab_mp`(`code`, `designation`, `code_barre`, `provenance`, `unite`, `px_achat`, `seuil`, `stock` , `emplacement`) VALUES 
+                    ('".$code."','".$des."','".$code_barre."','".$provenance."','".$unite."','".$prix."','".$seuil."','".$stock."','".$emplacement."')";
+                    $requete = mysql_query($sql);
+                
+            } else {
+    			$sql=" UPDATE `erp_fab_mp` SET `code`='".$code."',`code_barre`='".$code_barre."',
+			    `designation`='".$designation."', `unite`='".$unite."', `provenance`='".$provenance."' , `px_achat`='".$px_achat."', `seuil`='".$seuil."', `consommable`='".$consommable."',emplacement='".$emplacement."'  WHERE code='".$code."'";   
+                
+                
+                $sql="update erp_fab_mp set code='".$code."', code_barre='".$code_barre."', designation='".$designation."', unite='".$unite."', provenance='".$provenance."', unite='".$unite."', px_achat='".$prix."', seuil='".$seuil."', emplacement='".$emplacement."' where code='".$code"'";   
+                $requete = mysql_query($sql);
+                       }
+                    }
+                }	
+            }
+            ?>
+            <?php
+                $reqCode="";
+                $code="";
+                if(isset($_POST['code'])){
+                    if(($_POST['code'])<>""){
+                        $code			=	$_POST['code'];
+                        $reqCode		=	" and  id=".$code;
+                    }
+                }
+            ?>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card m-b-20">
@@ -254,11 +296,45 @@ if(isset($_POST['code'])){
                                             <b></b><br>
                                             <input name="SubmitContact" type="submit" id="submit"
                                                 class="btn btn-primary btn-sm " value="Filtrer">
-                                                <a href="exportation/export_mp.php" class="btn btn-success waves-effect waves-light">
-													Exporter Excel
-												</a>
+                                            <a href="exportation/export_mp.php"
+                                                class="btn btn-success waves-effect waves-light">
+                                                Exporter Excel
+                                            </a>
                                         </div>
+                                        <div class="col-xl-3">
+                                            <form action="" method="POST" id="form" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label for="" class="control-label">Fichier (.xls) :<span
+                                                            class='require'>*</span></label>
+                                                    <input type="file" class="form-control input-lg" id="FileAImporter"
+                                                        name="FileAImporter" style="height:60px;" required>
+                                                </div>
 
+                                                <style>
+                                                #progress {
+                                                    display: none;
+                                                    margin-top: 50px;
+                                                }
+
+                                                #success,
+                                                #error {
+                                                    display: none;
+                                                }
+                                                </style>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-2">
+                                                        <br>
+                                                        <div id="success" class="alert alert-success"></div>
+                                                        <div id="error" class="alert alert-danger"></div>
+                                                        <button type="submit"
+                                                            class="btn btn-primary waves-effect waves-light">
+                                                            Importer
+                                                        </button>
+                                                        <input class="form-control" type="hidden" name="import_mail">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -280,66 +356,66 @@ if(isset($_POST['code'])){
                                 </thead>
                                 <tbody>
                                     <?php
-	$req="select * from erp_fab_mp where 1=1 ".$reqCode." order by code";
-	$query=mysql_query($req);
-	$total=mysql_num_rows($query);
-	
-	if(isset($_GET['page'])){
-		$page = $_GET['page'];
-	} else{
-		$page = 1;
-	}
-	if(isset($_POST['limit-records'])){
-		$limit = $_POST['limit-records'];
-	} else{
-		$limit = 20;
-	}
-	if(isset($_GET['limit'])){
-		$limit = $_GET['limit'];
-	}											
-	$start		 = ($page - 1) * $limit;
-	$page 		 = ceil( $total / $limit );						
-	$Previous    = $page - 1;
-	$Next 		 = $page + 1;	
-	
-	$code				=	"" ;
-	$code_barre			=	"" ;	
-	$designation		=	"" ;		
-	$prix				=	"0" ;
-	$type				=	"" ;	
-	$i					=	0;
-	$req="select * from erp_fab_mp where 1=1 ".$reqCode." order by code  LIMIT $start, $limit";
-	$query=mysql_query($req);
-	while($enreg=mysql_fetch_array($query))
-	{
-		$id					=	$enreg["id"] ;	
-		$code				=	$enreg["code"] ;
-		$code_barre			=	$enreg["code_barre"] ;
-		$designation		=	$enreg["designation"] ;		
-		$prix				=	$enreg["px_achat"] ;
-		$unite				=	$enreg["unite"] ;
-		$i++;
-		
-		$provenance="";
-		$req1="select * from erp_fab_classe where id=".$enreg['provenance'];
-		$query1=mysql_query($req1);
-		while($enreg1=mysql_fetch_array($query1)){
-			$provenance	=	$enreg1['classe'];
-		}
-		
-		$emplacement		=	"" ;
-		$req1="select * from erp_fab_emplacements where id=".$enreg['emplacement'];
-		$query1=mysql_query($req1);
-		while($enreg1=mysql_fetch_array($query1)){
-			$emplacement	=	$enreg1['emplacement'];
-		}
-		
-		if($enreg['consommable']==1){
-			$consommable 	=	'Oui';
-		} else{
-			$consommable 	=	'Non';
-		}
-	?>
+                                    $req="select * from erp_fab_mp where 1=1 ".$reqCode." order by code";
+                                    $query=mysql_query($req);
+                                    $total=mysql_num_rows($query);
+                                    
+                                    if(isset($_GET['page'])){
+                                        $page = $_GET['page'];
+                                    } else{
+                                        $page = 1;
+                                    }
+                                    if(isset($_POST['limit-records'])){
+                                        $limit = $_POST['limit-records'];
+                                    } else{
+                                        $limit = 20;
+                                    }
+                                    if(isset($_GET['limit'])){
+                                        $limit = $_GET['limit'];
+                                    }											
+                                    $start		 = ($page - 1) * $limit;
+                                    $page 		 = ceil( $total / $limit );						
+                                    $Previous    = $page - 1;
+                                    $Next 		 = $page + 1;	
+                                    
+                                    $code				=	"" ;
+                                    $code_barre			=	"" ;	
+                                    $designation		=	"" ;		
+                                    $prix				=	"0" ;
+                                    $type				=	"" ;	
+                                    $i					=	0;
+                                    $req="select * from erp_fab_mp where 1=1 ".$reqCode." order by code  LIMIT $start, $limit";
+                                    $query=mysql_query($req);
+                                    while($enreg=mysql_fetch_array($query))
+                                    {
+                                        $id					=	$enreg["id"] ;	
+                                        $code				=	$enreg["code"] ;
+                                        $code_barre			=	$enreg["code_barre"] ;
+                                        $designation		=	$enreg["designation"] ;		
+                                        $prix				=	$enreg["px_achat"] ;
+                                        $unite				=	$enreg["unite"] ;
+                                        $i++;
+                                        
+                                        $provenance="";
+                                        $req1="select * from erp_fab_classe where id=".$enreg['provenance'];
+                                        $query1=mysql_query($req1);
+                                        while($enreg1=mysql_fetch_array($query1)){
+                                            $provenance	=	$enreg1['classe'];
+                                        }
+                                        
+                                        $emplacement		=	"" ;
+                                        $req1="select * from erp_fab_emplacements where id=".$enreg['emplacement'];
+                                        $query1=mysql_query($req1);
+                                        while($enreg1=mysql_fetch_array($query1)){
+                                            $emplacement	=	$enreg1['emplacement'];
+                                        }
+                                        
+                                        if($enreg['consommable']==1){
+                                            $consommable 	=	'Oui';
+                                        } else{
+                                            $consommable 	=	'Non';
+                                        }
+                                    ?>
                                     <tr>
                                         <td><?php echo $i; ?></td>
                                         <td><?php echo $code; ?></td>

@@ -73,6 +73,7 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
+
 			$objPHPExcel->getActiveSheet()->SetCellValue('C'.$i, ($designation));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
@@ -80,6 +81,7 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
+
 			$objPHPExcel->getActiveSheet()->SetCellValue('D'.$i, ($prov));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
@@ -87,6 +89,7 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
+
 			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$i, ($unite));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
@@ -95,7 +98,6 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
 			);	
           
-		
 			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$i, ($seuil));
 			$objPHPExcel->getActiveSheet()
 			->getStyle('A'.$i)
@@ -123,7 +125,8 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 			->getNumberFormat()
 			->setFormatCode(
 				PHPExcel_Style_NumberFormat::FORMAT_TEXT
-			);	}
+			);	
+		}
 
 		$i ++;
 	}

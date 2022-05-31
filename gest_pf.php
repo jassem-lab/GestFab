@@ -1,4 +1,41 @@
 <?php include ("menu_footer/menu.php"); ?>
+<?php
+
+if(isset($_POST['import_mail'])){	
+
+$file = $_FILES["FileAImporter"]["tmp_name"]; // getting temporary source of excel file
+include("Classes/PHPExcel/IOFactory.php"); // Add PHPExcel Library in this code
+$objPHPExcel = PHPExcel_IOFactory::load($file); // create object of PHPExcel library by using load() method and in load method define path of selected file
+foreach ($objPHPExcel->getWorksheetIterator() as $worksheet)
+        
+    {
+
+
+    $highestRow = $worksheet->getHighestRow();	
+    for($row=5; $row<=$highestRow; $row++)
+    {
+        $code           = mysql_real_escape_string($worksheet->getCellByColumnAndRow(0, $row)->getValue());
+        $des 	        = mysql_real_escape_string($worksheet->getCellByColumnAndRow(1, $row)->getValue());
+        $code_barre 	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(2, $row)->getValue());
+        $prix 	        = mysql_real_escape_string($worksheet->getCellByColumnAndRow(3, $row)->getValue());
+        $provenance    	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(4, $row)->getValue());
+        $seuil         	= mysql_real_escape_string($worksheet->getCellByColumnAndRow(5, $row)->getValue());
+
+        $req1="select * from erp_fab_produits where semi = 1 and code='".$code."'";    
+        $query1 = mysql_query($req1) ; 
+        if(mysql_num_rows($query1)<1){
+            
+            $sql="INSERT INTO `erp_fab_produits`(`code`, `designation`, `code_barre`, `provenance`, `prix`, `seuil`,  , `semi` ) VALUES 
+            ('".$code."','".$des."','".$code_barre."','".$provenance."','".$prix."','".$seuil."', '1')";
+            $requete = mysql_query($sql);
+        
+    } else {
+                echo   $sql="update erp_fab_produits set  code_barre='".$code_barre."', designation='".$des."', provenance='".$provenance."', prix='".$prix."', seuil='".$seuil."' where code='".$code."'";   
+               }
+            }
+        }	
+    }
+    ?>
 
 <div class="wrapper">
 
@@ -251,6 +288,42 @@ if(isset($_POST['prov'])){
                                                 class="btn btn-success waves-effect waves-light ">
                                                 Exporter Excel
                                             </a>
+                                            <div class="col-xl-4 mt-5">
+                                                <form action="" method="POST" id="form" enctype="multipart/form-data">
+                                                    <div class="form-group">
+                                                        <label for="" class="control-label">Fichier (.xls) :<span
+                                                                class='require'>*</span></label>
+                                                        <input type="file" class="form-control input-lg"
+                                                            id="FileAImporter" name="FileAImporter" style="height:60px;"
+                                                            required>
+                                                    </div>
+
+                                                    <style>
+                                                    #progress {
+                                                        display: none;
+                                                        margin-top: 50px;
+                                                    }
+
+                                                    #success,
+                                                    #error {
+                                                        display: none;
+                                                    }
+                                                    </style>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-2">
+                                                            <br>
+                                                            <div id="success" class="alert alert-success"></div>
+                                                            <div id="error" class="alert alert-danger"></div>
+                                                            <button type="submit"
+                                                                class="btn btn-primary waves-effect waves-light">
+                                                                Importer
+                                                            </button>
+                                                            <input class="form-control" type="hidden"
+                                                                name="import_mail">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -741,9 +814,4 @@ $(".btnmp_1").on("click", function() {
     }, 'json');
     $('.page-loader-wrapper').removeClass("show");
 });
-
-
-
-
-
 </script>

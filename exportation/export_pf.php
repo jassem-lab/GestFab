@@ -22,8 +22,8 @@ $objPHPExcel->getActiveSheet()->SetCellValue('B1', ("Liste des Produits finis"))
 $objPHPExcel->getActiveSheet()->SetCellValue('A2', ("Date"));
 $objPHPExcel->getActiveSheet()->SetCellValue('B2', ($Date));
 $objPHPExcel->getActiveSheet()->SetCellValue('A4', ("Code"));
-$objPHPExcel->getActiveSheet()->SetCellValue('B4', ("Désignation"));
-$objPHPExcel->getActiveSheet()->SetCellValue('C4', ("Code à barre"));
+$objPHPExcel->getActiveSheet()->SetCellValue('B4', ("Code à barre"));
+$objPHPExcel->getActiveSheet()->SetCellValue('C4', ("Désignation"));
 $objPHPExcel->getActiveSheet()->SetCellValue('D4', ("Prix de vente"));
 $objPHPExcel->getActiveSheet()->SetCellValue('E4', ("Provenance"));
 $objPHPExcel->getActiveSheet()->SetCellValue('F4', ("Seuil d'approvisionnement"));

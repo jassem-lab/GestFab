@@ -228,7 +228,6 @@ if(isset($_POST['enregistrer_mail'])){
                                         </button>
                                         <input class="form-control" type="hidden" name="enregistrer_mail">
                                     </div>
-
                                 </div>
                             </form>
                         </div>
